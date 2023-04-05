@@ -1,0 +1,23 @@
+{
+  "name": "@yetanothertool/yat-vault",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf ./build && tsc",
+    "start": "npm run build && node build/index.js"
+  },
+  "keywords": [],
+  "author": "Studio Webux",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
+    "@types/node": "^18.15.11",
+    "rimraf": "^4.4.1",
+    "typescript": "^5.0.3"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}
