@@ -14,8 +14,8 @@ export default async function EditSecret(filename: string) {
   if (!_filename) throw new Error("Missing File Name.");
 
   // Processing
-  const data = new Data(_filename);
   Writer.Write(_filename);
+  const data = new Data(_filename);
   const encryption = new Encryption(data.GetPrivateKey(), data.GetPublicKey());
   data.EncryptValues(encryption);
 

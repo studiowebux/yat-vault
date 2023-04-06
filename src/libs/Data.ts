@@ -19,17 +19,13 @@ export default class Data {
   private secretFilename: string;
   private configurations: configurations | null;
   private values: Array<secret> | null;
-  private data: {
-    _configurations: configurations;
-    _values: Array<secret>;
-  } | null;
 
   constructor(secretFilename: string) {
     this.secretFilename = secretFilename;
-    this.data = this.Load();
+    const data = this.Load();
 
-    this.configurations = this.LoadConfigurations();
-    this.values = this.LoadValues();
+    this.configurations = data.configurations;
+    this.values = data.values;
   }
 
   public Save() {
@@ -39,20 +35,15 @@ export default class Data {
     );
   }
 
-  public Load(): any {
-    this.data = load(
+  public Load(): { configurations: configurations; values: Array<secret> } {
+    const data = load(
       readFileSync(this.secretFilename, { encoding: "utf-8" })
     ) as { _configurations: configurations; _values: Array<secret> };
 
-    return this.data;
-  }
-
-  public LoadValues(): Array<secret> | null {
-    return this.data?._values as Array<secret>;
-  }
-
-  private LoadConfigurations(): configurations | null {
-    return this.data?._configurations as configurations;
+    return {
+      configurations: data._configurations,
+      values: data._values,
+    };
   }
 
   public GetPrivateKey(): string {
