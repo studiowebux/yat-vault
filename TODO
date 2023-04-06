@@ -1,0 +1,11 @@
+- [] Load Public and Private keys from AWS SSM
+- [] Sync local Configurations to AWS SSM
+- [] Allow Multiple Public Keys / Private Keys
+- [] Allow updating the Keys quickly
+- [] Write Tests Cases
+- [] Support CI environment
+- [] Support Windows
+- [] Create CLI Utility
+- [] Write Documentation
+- [] Create Logo and find a name
+- [] Write inline help

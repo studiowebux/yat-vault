@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 export default class Reader {
   constructor() {}
 
-  public Read(filename: string) {
-    readFileSync(filename, { encoding: "utf-8" });
+  public static Read(filename: string) {
+    return readFileSync(filename, { encoding: "utf-8" });
   }
 }

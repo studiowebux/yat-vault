@@ -13,11 +13,13 @@
   "license": "MIT",
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",
+    "@types/minimist": "^1.2.2",
     "@types/node": "^18.15.11",
     "rimraf": "^4.4.1",
     "typescript": "^5.0.3"
   },
   "dependencies": {
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "minimist": "^1.2.8"
   }
 }

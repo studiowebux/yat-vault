@@ -1,36 +1,34 @@
-console.log("hi");
+import parseArgs from "minimist";
+import DecryptSecret from "./cases/decryptSecret";
+import EditSecret from "./cases/editSecret";
+import GenerateKeyPair from "./cases/generateKeyPair";
+import GenerateSecret from "./cases/generateSecret";
 
-import Encryption from "./libs/Encryption";
-import Writer from "./libs/Writer";
-import Input from "./libs/Input";
-import Data from "./libs/Data";
+const argv = parseArgs(process.argv.slice(2));
 
 (async () => {
-  const writer = new Writer();
-  const input = new Input();
-  const data = new Data("./secrets.yml");
+  try {
+    if (argv["key-gen"]) {
+      return await GenerateKeyPair(argv["key-name"]);
+    }
 
-  const { privateKey, publicKey } = Encryption.GenerateKeyPair("Hola!");
-  writer.Save("cle.pub", publicKey);
-  writer.Save("cle.key", privateKey);
+    if (argv["create"]) {
+      return await GenerateSecret(argv["filename"]);
+    }
 
-  const encryption = new Encryption(privateKey, publicKey);
-  const bEncrypted = encryption.EncryptData(
-    Buffer.from("Bonjour Comment ça va ?")
-  );
-  console.debug(bEncrypted.toString("base64"));
+    if (argv["edit"]) {
+      return await EditSecret(argv["filename"]);
+    }
 
-  const passphrase = await input.ReadInputHidden("Passphrase: ");
+    if (argv["print"]) {
+      return await DecryptSecret(argv["filename"]);
+    }
 
-  const bUnencrypted = await encryption.DecryptData(bEncrypted, passphrase);
-  console.debug(Buffer.from(bUnencrypted).toString());
-
-  const secrets = data.Load();
-  console.debug(secrets);
-  console.log(secrets.phrase);
-
-  // TODO: Decrypt saved secrets
-
-  secrets["phrase"] = bEncrypted.toString("base64");
-  data.Save(secrets);
+    if (argv["sync"]) {
+      throw new Error("Not Implemented.");
+    }
+  } catch (e: any) {
+    console.error(`\nERR: ${e.message}`);
+    process.exit(1);
+  }
 })();
