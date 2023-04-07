@@ -1,6 +1,7 @@
 {
   "name": "@yetanothertool/yat-vault",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "private": false,
   "description": "",
   "main": "build/index.js",
   "files": [
@@ -9,14 +10,18 @@
     "build/"
   ],
   "bin": {
-    "yat-vault": "dist/index.js"
+    "yat-vault": "build/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf ./build && tsc",
     "start": "npm run build && node build/index.js"
   },
-  "keywords": [],
+  "keywords": [
+    "secrets",
+    "vault",
+    "ssm"
+  ],
   "author": "Studio Webux",
   "license": "MIT",
   "devDependencies": {
@@ -30,5 +35,13 @@
     "@aws-sdk/client-ssm": "^3.306.0",
     "js-yaml": "^4.1.0",
     "minimist": "^1.2.8"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yet-another-tool/yat-vault.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yet-another-tool/yat-vault/issues"
+  },
+  "homepage": "https://github.com/yet-another-tool/yat-vault#readme"
 }
