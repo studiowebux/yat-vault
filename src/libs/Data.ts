@@ -1,11 +1,21 @@
 import { readFileSync, writeFileSync } from "fs";
 import { load, dump } from "js-yaml";
 import Encryption from "./Encryption";
+import { isBase64 } from "./Utils";
+import AwsLoader from "./Loader/aws.ssm";
+
+interface IAWS {
+  privateKeyPath: string;
+  publicKeyPath: string;
+  regions: Array<string>;
+  awsRegion: string;
+}
 
 interface configurations {
   publicKeyPath: string;
   privateKeyPath: string;
-  aws: { privateKeyPath: string; publicKeyPath: string; awsRegion: string };
+  variables: Array<string | number>;
+  aws: IAWS;
 }
 
 interface secret {
@@ -13,6 +23,7 @@ interface secret {
   description: string;
   value: string | number;
   type: "String" | "SecureString" | "StringList";
+  overwrite: boolean;
 }
 
 export default class Data {
@@ -20,12 +31,16 @@ export default class Data {
   private configurations: configurations | null;
   private values: Array<secret> | null;
 
+  private awsLoader: AwsLoader;
+
   constructor(secretFilename: string) {
     this.secretFilename = secretFilename;
     const data = this.Load();
 
     this.configurations = data.configurations;
     this.values = data.values;
+
+    this.awsLoader = new AwsLoader(this.configurations.aws.awsRegion);
   }
 
   public Save() {
@@ -46,36 +61,70 @@ export default class Data {
     };
   }
 
-  public GetPrivateKey(): string {
+  private ExtractKeyValue(value: string) {
+    return isBase64(value)
+      ? Buffer.from(value, "base64").toString("utf-8")
+      : value;
+  }
+
+  public async GetPrivateKey(): Promise<string | undefined> {
     let filename = null;
 
     if (this.configurations?.aws.privateKeyPath)
-      filename = this.configurations?.aws.privateKeyPath;
+      try {
+        const key = await this.awsLoader.LoadPrivateKey(
+          this.configurations?.aws.privateKeyPath
+        );
+        return Promise.resolve(key);
+      } catch (e: any) {
+        console.error(
+          `WARN: aws.ssm: Path defined but '${e.message}' - '${this.configurations.aws.awsRegion}' -> '${this.configurations.aws.privateKeyPath}'`
+        );
+      }
     if (this.configurations?.privateKeyPath)
       filename = this.configurations?.privateKeyPath;
-    if (process.env.PRIVATE_KEY) return process.env.PRIVATE_KEY;
+    if (process.env.PRIVATE_KEY)
+      return Promise.resolve(this.ExtractKeyValue(process.env.PRIVATE_KEY));
 
     if (filename) {
-      return readFileSync(filename, { encoding: "utf-8" }).toString();
+      return Promise.resolve(
+        readFileSync(filename, { encoding: "utf-8" }).toString()
+      );
     }
 
-    throw new Error("No private key defined.");
+    console.error(
+      "WARN: No private key defined. You will be unable to Encrypt or Decrypt secrets"
+    );
   }
 
-  public GetPublicKey(): string {
+  public async GetPublicKey(): Promise<string | undefined> {
     let filename = null;
 
     if (this.configurations?.aws.publicKeyPath)
-      filename = this.configurations?.aws.publicKeyPath;
+      try {
+        const key = await this.awsLoader.LoadPublicKey(
+          this.configurations?.aws.publicKeyPath
+        );
+        return Promise.resolve(key);
+      } catch (e: any) {
+        console.error(
+          `WARN: aws.ssm: Path defined but '${e.message}' - '${this.configurations.aws.awsRegion}' -> '${this.configurations.aws.publicKeyPath}'`
+        );
+      }
     if (this.configurations?.publicKeyPath)
       filename = this.configurations?.publicKeyPath;
-    if (process.env.PUBLIC_KEY) return process.env.PUBLIC_KEY;
+    if (process.env.PUBLIC_KEY)
+      return Promise.resolve(this.ExtractKeyValue(process.env.PUBLIC_KEY));
 
     if (filename) {
-      return readFileSync(filename, { encoding: "utf-8" }).toString();
+      return Promise.resolve(
+        readFileSync(filename, { encoding: "utf-8" }).toString()
+      );
     }
 
-    throw new Error("No public key defined.");
+    console.error(
+      "ERR: No public key defined. You will be unable to Encrypt secrets"
+    );
   }
 
   public GetValues(): Array<secret> | null {
@@ -89,26 +138,11 @@ export default class Data {
       );
   }
 
-  public static CreateSecretFile(): string {
-    return dump({
-      _values: [
-        {
-          name: "",
-          value: "",
-          description: "",
-          type: "String|SecureString|StringList",
-        },
-      ],
-      _configurations: {
-        publicKeyPath: "",
-        privateKeyPath: "",
-        aws: {
-          publicKeyPath: "",
-          privateKeyPath: "",
-          awsRegion: "",
-        },
-      },
-    });
+  public HasSecrets(): boolean {
+    if (!this.values) return false;
+    return (
+      this.values?.filter((value) => value.type === "SecureString").length > 0
+    );
   }
 
   public EncryptValues(encryption: Encryption): void {
@@ -130,19 +164,33 @@ export default class Data {
     this.values = data;
   }
 
-  public async DecryptValues(encryption: Encryption): Promise<Array<secret>> {
-    const values = await Promise.all(
-      this.values?.map(async (value) => {
-        if (value.type === "SecureString")
-          value.value = (
-            await encryption.DecryptData(
-              Buffer.from(value.value.toString().split("$enc:")[1], "base64")
-            )
-          ).toString();
-        return value;
-      }) || []
-    );
+  public async DecryptValues(
+    encryption: Encryption | undefined
+  ): Promise<Array<secret>> {
+    let values = this.values || [];
+    if (encryption) {
+      values = await Promise.all(
+        this.values?.map(async (value) => {
+          if (value.type === "SecureString")
+            value.value = (
+              await encryption.DecryptData(
+                Buffer.from(value.value.toString().split("$enc:")[1], "base64")
+              )
+            ).toString();
+          return value;
+        }) || []
+      );
+    }
 
     return Promise.resolve(values);
+  }
+
+  public GetConfig(provider: string): IAWS | undefined {
+    // @ts-ignore
+    return this.configurations[provider];
+  }
+
+  public GetVariables(): Array<string | number> | undefined {
+    return this.configurations?.variables;
   }
 }

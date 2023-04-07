@@ -16,6 +16,14 @@ export default class Encryption {
     this.publicKey = publicKey;
   }
 
+  public static HasKeyPair(
+    privateKey: string | undefined,
+    publicKey: string | undefined
+  ): boolean {
+    if (!privateKey || !publicKey) return false;
+    return true;
+  }
+
   public static GenerateKeyPair(
     passphrase: string = "",
     cipher: string = "aes-256-cbc",

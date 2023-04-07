@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "build/index.js",
+  "files": [
+    "package.json",
+    "package-lock.json",
+    "build/"
+  ],
+  "bin": {
+    "yat-vault": "dist/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf ./build && tsc",
@@ -19,6 +27,7 @@
     "typescript": "^5.0.3"
   },
   "dependencies": {
+    "@aws-sdk/client-ssm": "^3.306.0",
     "js-yaml": "^4.1.0",
     "minimist": "^1.2.8"
   }

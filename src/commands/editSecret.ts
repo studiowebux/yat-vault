@@ -16,9 +16,23 @@ export default async function EditSecret(filename: string) {
   // Processing
   Writer.Write(_filename);
   const data = new Data(_filename);
-  const encryption = new Encryption(data.GetPrivateKey(), data.GetPublicKey());
-  data.EncryptValues(encryption);
+
+  if (data.HasSecrets()) {
+    const privateKey = (await data.GetPrivateKey()) as string;
+    const publicKey = (await data.GetPublicKey()) as string;
+    if (Encryption.HasKeyPair(privateKey, publicKey)) {
+      const encryption = new Encryption(privateKey, publicKey);
+      data.EncryptValues(encryption);
+    } else {
+      throw new Error(
+        "Unable to encrypt the file, missing public and/or private keys. The file has been ALTERED and NOT encrypted."
+      );
+    }
+  }
 
   // Save to disk
   data.Save();
+
+  // Output
+  console.log("SUCCESS: File Saved !");
 }

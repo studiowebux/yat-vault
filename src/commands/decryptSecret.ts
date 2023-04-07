@@ -14,9 +14,20 @@ export default async function DecryptSecret(filename: string) {
 
   // Processing
   const data = new Data(_filename);
-  const encryption = new Encryption(data.GetPrivateKey(), data.GetPublicKey());
+  let encryption: Encryption | undefined;
+  if (data.HasSecrets()) {
+    const privateKey = (await data.GetPrivateKey()) as string;
+    const publicKey = (await data.GetPublicKey()) as string;
+    if (Encryption.HasKeyPair(privateKey, publicKey)) {
+      encryption = new Encryption(privateKey, publicKey);
+    }
+  }
+
   const values = await data.DecryptValues(encryption);
 
   // Print on console
   console.table(values);
+
+  // Output
+  console.log("SUCCESS: Values Decrypted !");
 }
