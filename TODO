@@ -9,8 +9,8 @@
 - [x] Support CI environment
 - [] Support Windows 😬
 - [x] Create CLI Utility
-- [] Write Documentation
-- [] Create Logo and find a name
+- [x] Write Documentation
+- [x] Create Logo and find a name
 - [] Write inline help
 - [] Provide a UI
 - [] Provide a way to detect drift
