@@ -32,68 +32,9 @@
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
-
-## About
-
-## Installation
-
-## Usage
-
-###
-
-#### There is multiple ways to load the keys
-
-### Create new Secret File
-
-# or to create it in the current directory
-
-#### The secret file structure
-
-### Edit Secret File
-
-### Print Secret File Values
-
-### Encrypt Secret File
-
-### Upload your Key pair
-
-### Sync Your local secrets to your provider
-
-## Changelog
-
-### V0.0.0 - Alpha - 2023-04-07
-
-## Contributing
-
-### Local Development
-
-## License
-
-## Contact
-
 ---
 
 ## About
-
-<div>
-<b> | </b>
-<a href="https://www.buymeacoffee.com/studiowebux" target="_blank"
-      ><img
-        src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
-        alt="Buy Me A Coffee"
-        style="height: 30px !important; width: 105px !important"
-/></a>
-<b> | </b>
-<a href="https://webuxlab.com" target="_blank"
-      ><img
-        src="https://webuxlab-static.s3.ca-central-1.amazonaws.com/logoAmpoule.svg"
-        alt="Webux Logo"
-        style="height: 30px !important"
-/> Webux Lab</a>
-<b> | </b>
-</div>
-
----
 
 ## Installation
 
@@ -356,3 +297,21 @@ Distributed under the MIT License. See LICENSE for more information.
 ## Contact
 
 - Tommy Gingras @ tommy@studiowebux.com | Studio Webux
+
+<div>
+<b> | </b>
+<a href="https://www.buymeacoffee.com/studiowebux" target="_blank"
+      ><img
+        src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+        alt="Buy Me A Coffee"
+        style="height: 30px !important; width: 105px !important"
+/></a>
+<b> | </b>
+<a href="https://webuxlab.com" target="_blank"
+      ><img
+        src="https://webuxlab-static.s3.ca-central-1.amazonaws.com/logoAmpoule.svg"
+        alt="Webux Logo"
+        style="height: 30px !important"
+/> Webux Lab</a>
+<b> | </b>
+</div>
