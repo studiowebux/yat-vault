@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import parseArgs from "minimist";
 import DecryptSecret from "./commands/decryptSecret";
 import EditSecret from "./commands/editSecret";
