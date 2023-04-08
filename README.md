@@ -115,7 +115,7 @@ This is an array containing the parameter using this format:
 
 ```yaml
 _values:
-    - name: /the/ssm/path/with/the/name/of/your/parameter
+  - name: /the/ssm/path/with/the/name/of/your/parameter
     value: The Value to store or encrypt
     description: an optional description
     type: String|SecureString|StringList
@@ -127,17 +127,17 @@ To do so you must define the key/value in the `_configurations.variables` array.
 
 ```yaml
 _values:
-    - name: /{tenant}/{project_name}/{stage}/password
+  - name: /{tenant}/{project_name}/{stage}/password
     value: my super password that will be encrypted
     description: password is safe here
     type: SecureString
     overwrite: false
 
 _configurations:
-    variables:
-        tenant: wl
-        project_name: yat-vault
-        stage: env:STAGE
+  variables:
+    tenant: wl
+    project_name: yat-vault
+    stage: env:STAGE
 ```
 
 The **variables** array contains the value for each key. They will be automatically replaced when syncing.  
@@ -218,6 +218,10 @@ This command is verbose to let you know what is going on.
 ## Changelog
 
 The [TODO](./TODO)
+
+### V1.0.2 - Alpha - 2023-04-07
+
+- Review Documentation
 
 ### V1.0.1 - Alpha - 2023-04-07
 
