@@ -1,6 +1,6 @@
 {
   "name": "@yetanothertool/yat-vault",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": false,
   "description": "Simple CLI tool to manage application secrets",
   "main": "build/index.js",

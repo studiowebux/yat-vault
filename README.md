@@ -26,6 +26,7 @@
     <li>
       <a href="#usage">Usage</a>
     </li>
+    <li><a href="#environment-variables">Environment Variables</a></li>
     <li><a href="#changelog">Changelog</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -261,6 +262,11 @@ The `envName` in the secret file, determines the **Key** of your parameter.
 ## Changelog
 
 The [TODO](./TODO)
+
+### V1.0.4 - Alpha - 2023-04-08
+
+- AWS Configuration is optional
+- Bug fixes
 
 ### V1.0.3 - Alpha - 2023-04-08
 

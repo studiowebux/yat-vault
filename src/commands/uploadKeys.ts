@@ -26,8 +26,8 @@ export default async function UploadKeys(
 
   const awsLoader = new AwsLoader(_region);
   await awsLoader.UploadKeys(
-    data.GetConfig(provider)?.privateKeyPath as string,
-    data.GetConfig(provider)?.publicKeyPath as string,
+    data.GetConfig(_provider)?.privateKeyPath as string,
+    data.GetConfig(_provider)?.publicKeyPath as string,
     (await data.GetPrivateKey()) as string,
     (await data.GetPublicKey()) as string
   );

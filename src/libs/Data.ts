@@ -34,7 +34,7 @@ export default class Data {
   private configurations: configurations | null;
   private values: Array<secret> | null;
 
-  private awsLoader: AwsLoader;
+  private awsLoader: AwsLoader | null;
 
   constructor(secretFilename: string) {
     this.secretFilename = path.basename(secretFilename);
@@ -44,7 +44,11 @@ export default class Data {
     this.configurations = data.configurations;
     this.values = data.values;
 
-    this.awsLoader = new AwsLoader(this.configurations.aws.awsRegion);
+    if (this.configurations?.aws) {
+      this.awsLoader = new AwsLoader(this.configurations?.aws?.awsRegion);
+    } else {
+      this.awsLoader = null;
+    }
   }
 
   public Save() {
@@ -77,9 +81,9 @@ export default class Data {
   public async GetPrivateKey(): Promise<string | undefined> {
     let filename = null;
 
-    if (this.configurations?.aws.privateKeyPath)
+    if (this.configurations?.aws?.privateKeyPath)
       try {
-        const key = await this.awsLoader.LoadPrivateKey(
+        const key = await this.awsLoader?.LoadPrivateKey(
           this.configurations?.aws.privateKeyPath
         );
         return Promise.resolve(key);
@@ -109,9 +113,9 @@ export default class Data {
   public async GetPublicKey(): Promise<string | undefined> {
     let filename = null;
 
-    if (this.configurations?.aws.publicKeyPath)
+    if (this.configurations?.aws?.publicKeyPath)
       try {
-        const key = await this.awsLoader.LoadPublicKey(
+        const key = await this.awsLoader?.LoadPublicKey(
           this.configurations?.aws.publicKeyPath
         );
         return Promise.resolve(key);
@@ -134,7 +138,7 @@ export default class Data {
     }
 
     console.error(
-      "ERR: No public key defined. You will be unable to Encrypt secrets"
+      "WARN: No public key defined. You will be unable to Encrypt secrets"
     );
   }
 
@@ -196,9 +200,13 @@ export default class Data {
     return Promise.resolve(values);
   }
 
-  public GetConfig(provider: string): IAWS | undefined {
+  public GetConfig(provider: string): IAWS | null {
     // @ts-ignore
-    return this.configurations[provider];
+    if (!this.configurations || !this.configurations[provider])
+      throw new Error("Provider configuration not found.");
+
+    // @ts-ignore
+    return this.configurations ? this.configurations[provider] : null;
   }
 
   public GetVariables(): Array<string | number> | undefined {

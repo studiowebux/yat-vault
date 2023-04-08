@@ -38,10 +38,3 @@ _configurations:
     tenant: wl
     project_name: yat-vault
     stage: env:STAGE
-  aws:
-    privateKeyPath: "/yat-vault/private-key"
-    publicKeyPath: "/yat-vault/public-key"
-    awsRegion: "ca-central-1"
-    regions:
-      - ca-central-1
-      - us-east-1

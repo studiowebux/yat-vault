@@ -8,8 +8,12 @@ import Loader from "../Loader";
 export default class AwsLoader extends Loader {
   private client: SSMClient | undefined;
 
-  constructor(region: string = "us-east-1") {
+  constructor(region: string) {
     super();
+    if (!region || region === "") {
+      region = process.env.AWS_REGION || "us-east-1";
+      console.log(`INFO: Using AWS Region: ${region}`);
+    }
     this.client = new SSMClient({ region: region });
   }
 

@@ -13,6 +13,7 @@
 - [x] Passing values through env variables
 - [x] Upload local Keys to AWS SSM
 - [x] Generate local .env
+- [x] AWS Configuration is optional
 - [] Support Windows 😬
 - [] Print values with replaced variables
 - [] Allow Multiple Public Keys / Private Keys
