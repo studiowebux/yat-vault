@@ -9,10 +9,13 @@ import GenerateSecret from "./commands/generateSecret";
 import SyncSecrets from "./commands/syncSecrets";
 import UploadKeys from "./commands/uploadKeys";
 
+const { version, name, author } = require("../package.json");
+
 const argv = parseArgs(process.argv.slice(2));
 
 (async () => {
   try {
+    console.log(`${name}: V${version} @ ${author}`);
     if (argv["key-gen"]) {
       return await GenerateKeyPair(argv["key-name"]);
     }
