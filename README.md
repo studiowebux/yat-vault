@@ -219,7 +219,7 @@ This command is verbose to let you know what is going on.
 
 The [TODO](./TODO)
 
-### V1.0.0 - Alpha - 2023-04-07
+### V1.0.1 - Alpha - 2023-04-07
 
 - First requirements implemented
 - Deployed to npmjs
