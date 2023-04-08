@@ -8,7 +8,7 @@ import Loader from "../Loader";
 export default class AwsLoader extends Loader {
   private client: SSMClient | undefined;
 
-  constructor(region: string) {
+  constructor(region: string = "us-east-1") {
     super();
     this.client = new SSMClient({ region: region });
   }

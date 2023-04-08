@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from "fs";
+import path from "node:path";
 import { load, dump } from "js-yaml";
 import Encryption from "./Encryption";
 import { isBase64 } from "./Utils";
@@ -20,21 +21,24 @@ interface configurations {
 
 interface secret {
   name: string;
-  description: string;
+  description?: string;
   value: string | number;
   type: "String" | "SecureString" | "StringList";
   overwrite: boolean;
+  envName?: string;
 }
 
 export default class Data {
   private secretFilename: string;
+  private secretPath: string;
   private configurations: configurations | null;
   private values: Array<secret> | null;
 
   private awsLoader: AwsLoader;
 
   constructor(secretFilename: string) {
-    this.secretFilename = secretFilename;
+    this.secretFilename = path.basename(secretFilename);
+    this.secretPath = path.dirname(secretFilename);
     const data = this.Load();
 
     this.configurations = data.configurations;
@@ -45,14 +49,17 @@ export default class Data {
 
   public Save() {
     writeFileSync(
-      this.secretFilename,
+      path.resolve(path.join(this.secretPath, this.secretFilename)),
       dump({ _values: this.values, _configurations: this.configurations })
     );
   }
 
   public Load(): { configurations: configurations; values: Array<secret> } {
     const data = load(
-      readFileSync(this.secretFilename, { encoding: "utf-8" })
+      readFileSync(
+        path.resolve(path.join(this.secretPath, this.secretFilename)),
+        { encoding: "utf-8" }
+      )
     ) as { _configurations: configurations; _values: Array<secret> };
 
     return {
@@ -88,7 +95,9 @@ export default class Data {
 
     if (filename) {
       return Promise.resolve(
-        readFileSync(filename, { encoding: "utf-8" }).toString()
+        readFileSync(path.resolve(path.join(this.secretPath, filename)), {
+          encoding: "utf-8",
+        }).toString()
       );
     }
 
@@ -118,7 +127,9 @@ export default class Data {
 
     if (filename) {
       return Promise.resolve(
-        readFileSync(filename, { encoding: "utf-8" }).toString()
+        readFileSync(path.resolve(path.join(this.secretPath, filename)), {
+          encoding: "utf-8",
+        }).toString()
       );
     }
 

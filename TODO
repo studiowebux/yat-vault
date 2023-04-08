@@ -1,23 +1,24 @@
 - [x] Load Public and Private keys from AWS SSM
 - [x] Sync local Configurations to AWS SSM
-- [] Allow Multiple Public Keys / Private Keys
-- [] Support AWS SSO
-- [] Support AWS Assume Role
 - [x] Load Keys from environment variables
-- [] Allow updating the Keys quickly
-- [] Write Tests Cases
 - [x] Support CI environment
-- [] Support Windows 😬
 - [x] Create CLI Utility
 - [x] Write Documentation
 - [x] Create Logo and find a name
-- [] Write inline help
-- [] Provide a UI
-- [] Provide a way to detect drift
+- [x] Write inline help
 - [x] Prevent user if the secret file already exist
 - [x] Prevent user if the key pair files already exist
 - [x] Preload private key before opening the file, or ignore those when nothing is encrypted
 - [x] Encrypt file without vi or terminal based editor
-- [] Print values with replaced variables
 - [x] Passing values through env variables
 - [x] Upload local Keys to AWS SSM
+- [x] Generate local .env
+- [] Support Windows 😬
+- [] Print values with replaced variables
+- [] Allow Multiple Public Keys / Private Keys
+- [] Support AWS SSO
+- [] Support AWS Assume Role
+- [] Provide a UI
+- [] Provide a way to detect drift
+- [] Allow updating Keys quickly
+- [] Write Tests Cases

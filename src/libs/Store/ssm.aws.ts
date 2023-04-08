@@ -10,7 +10,7 @@ export default class AwsSSM extends Store {
 
   constructor(
     opts: SSMClientConfig,
-    region: string,
+    region: string = "us-east-1",
     variables: Array<any> = []
   ) {
     super("aws.ssm", region, variables);

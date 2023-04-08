@@ -12,6 +12,7 @@ export default class Generator {
           description: "",
           type: "String|SecureString|StringList",
           overwrite: false,
+          envName: "",
         },
       ],
       _configurations: {
@@ -21,9 +22,8 @@ export default class Generator {
         aws: {
           privateKeyPath: "/yat-vault/private-key",
           publicKeyPath: "/yat-vault/public-key",
-          awsRegion: "",
-          regions: ["NOT_IMPLEMENTED"],
-          roleToAssume: "NOT_IMPLEMENTED",
+          awsRegion: "us-east-1",
+          regions: ["us-east-1"],
         },
       },
     });

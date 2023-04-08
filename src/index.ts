@@ -4,10 +4,12 @@ import parseArgs from "minimist";
 import DecryptSecret from "./commands/decryptSecret";
 import EditSecret from "./commands/editSecret";
 import EncryptSecret from "./commands/encryptSecret";
+import GenerateEnv from "./commands/generateEnv";
 import GenerateKeyPair from "./commands/generateKeyPair";
 import GenerateSecret from "./commands/generateSecret";
 import SyncSecrets from "./commands/syncSecrets";
 import UploadKeys from "./commands/uploadKeys";
+import PrintHelp from "./libs/Help";
 
 const { version, name, author } = require("../package.json");
 
@@ -47,9 +49,16 @@ const argv = parseArgs(process.argv.slice(2));
         argv["region"]
       );
     }
+
+    if (argv["dotenv"]) {
+      return await GenerateEnv(argv["filename"], argv["env"]);
+    }
+
+    PrintHelp();
   } catch (e: any) {
-    console.error(`\nERR: ${e.message}`);
-    process.env.DEBUG ?? console.error(e.stack);
+    process.env.DEBUG
+      ? console.error(e.stack)
+      : console.error(`ERR: ${e.message}`);
     process.exit(1);
   }
 })();

@@ -1,14 +1,17 @@
 import { spawnSync } from "node:child_process";
 import { writeFileSync } from "node:fs";
+import path from "node:path";
 
 export default class Writer {
   constructor() {}
 
   public static Write(filename: string) {
-    spawnSync("vi", [filename], { stdio: "inherit" });
+    spawnSync(process.env.EDITOR || "vi", [path.resolve(filename)], {
+      stdio: "inherit",
+    });
   }
 
   public static Save(filename: string, content: string) {
-    writeFileSync(filename, content);
+    writeFileSync(path.resolve(filename), content);
   }
 }

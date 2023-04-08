@@ -36,6 +36,19 @@
 
 ## About
 
+- Generate Key Pair ('RSA')
+- Create Empty secret file using a template
+- Encrypt only your secure parameters
+- Store all your configurations and commit them encrypted
+- Use terminal editor and encrypt the changes automatically
+- Use external editor and encrypt the changes manually
+- Print the decrypted values on your screen
+- Upload your key pair on AWS SSM _(Only AWS SSM is supported for the moment, create a PR for more integrations)_
+- Sync your local configurations to AWS SSM
+- Generate a .env file using your secrets
+- Compatible with your CI, using the environment variables
+- Made with NodeJS 18 and Typescript, built to be extended and improved
+
 ## Installation
 
 ```bash
@@ -120,6 +133,7 @@ _values:
     description: an optional description
     type: String|SecureString|StringList
     overwrite: false
+    envName: The environment key to generate the .env file
 ```
 
 You can use a concept of **variables** to dynamically set the **name** of your parameter.  
@@ -132,6 +146,7 @@ _values:
     description: password is safe here
     type: SecureString
     overwrite: false
+    envName: The environment key to generate the .env file
 
 _configurations:
   variables:
@@ -160,7 +175,7 @@ yat-vault --edit --filename test.yml
 It opens `vi` to let you update your configuration, once you save the file, it automatically encrypt the new values.
 
 > As of V0.0.0, it doesn't refresh/encrypt everything if you change the key pair.
-> So DON'T change the key pair. You will get a weird behaviour.
+> DON'T change the key pair. You will get a weird behaviour.
 
 ---
 
@@ -215,13 +230,49 @@ This command is verbose to let you know what is going on.
 
 ---
 
+### Generate .env file
+
+```bash
+yat-vault --dotenv --filename test.yml --env .env.test
+```
+
+The `envName` in the secret file, determines the **Key** of your parameter.
+
+---
+
+## Environment Variables
+
+| Name           | Description                                       |
+| -------------- | ------------------------------------------------- |
+| EDITOR         | Change the default editor ('vi')                  |
+| DEBUG          | Print Error Stack Trace                           |
+| PASSPHRASE     | Non interactive passphrase (CI)                   |
+| PRIVATE_KEY    | Non interactive Private Key (CI)                  |
+| PUBLIC_KEY     | Non interactive Public Key (CI)                   |
+| FILENAME       | Equivalent to --file-name                         |
+| KEYNAME        | Equivalent to --key-name                          |
+| PROVIDER       | Equivalent to --provider                          |
+| REGION         | Equivalent to --region                            |
+| ENV_FILENAME   | Equivalent to --env                               |
+| WITHOUT_QUOTES | Remove double quotes around values for .env files |
+
+---
+
 ## Changelog
 
 The [TODO](./TODO)
 
+### V1.0.3 - Alpha - 2023-04-08
+
+- Added new feature, generate .env file
+- Changed default values for aws ssm
+- Updated Documentation
+- Added print help
+- Fixes and Improvements
+
 ### V1.0.2 - Alpha - 2023-04-07
 
-- Review Documentation
+- Reviewed Documentation
 
 ### V1.0.1 - Alpha - 2023-04-07
 

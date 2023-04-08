@@ -1,8 +1,8 @@
 {
   "name": "@yetanothertool/yat-vault",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": false,
-  "description": "",
+  "description": "Simple CLI tool to manage application secrets",
   "main": "build/index.js",
   "files": [
     "package.json",
@@ -20,7 +20,9 @@
   "keywords": [
     "secrets",
     "vault",
-    "ssm"
+    "ssm",
+    "key pair",
+    "dotenv"
   ],
   "author": "Studio Webux",
   "license": "MIT",

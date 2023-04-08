@@ -4,28 +4,33 @@ _values:
     description: Youpi !
     type: String
     overwrite: false
+    envName: SIMPLE_STRING
   - name: /{tenant}/{region}/password
     value: >-
       $enc:Tdj47jAOybo5IApMBXvwQG0CNGlP59QxV77nL7uOn4WrqNJuWtv58IO9+4abbBMbB3vrBxwIMH2BSj+bMh2VJQ6qwFaC4B4TQSxdUgj2oxC0YSo/tyxeMsz3Gc/Qj+jbHeLn071jxF2ckwl8U8dUTP3aFzMUQFFSr/uZjcZs2qya96+q8tW1i7e+AopAy4KK46srqVVzAVgjagOupRkCCeyZglonUbbGPEVQglLve6/c0D15o+86LngKXaxsSiTAxP+12eX3POsOUZdCkuU1IbhKby9lxM5xAzkmA+ldVTAbxgmBaf9jNly5JI0u1PkyRy0W3Rwp2rRIOF2dneHX/HoK8V1KJkj4zoKcjzqfjVgXiqZCvUIfXhJagjlBFEzgzjSWIC1Ht5MnZs6CcIcaFIusX1QXzkAtcz1AlkjR+6Qk/F4kLs4ZbUGTAh6vBQc/Oosrx7yCLoTZg11/siT5z1McF1jedVk8ah7uYqyJAFnjDGT0KASVAC4XXGubh0tAomYvgv3QWajGrXjfex7GHrOjK5DGXZlNzYfPU3MzdzT6gf9mWx5dR/xKlk+afLU0t8Ez3ZGONPBVlKw9feAxlwbPQU4KxuoWIMw/HkQAv6UobqzNUOAnGBmfjMQnwC6KwMA4XXrcZzS3SfJscF2ml6luYH35l77G3b22GRj5lvw=
     description: a secure password
     type: SecureString
     overwrite: false
+    envName: PASSWORD
   - name: /{tenant}/{region}/db_password
     value: >-
       $enc:UKQGsFSSo3a1dOzbUDh9X+tXAROiTA6m+ObwOnTDy0SU48g6QTN/oEK8EcxsAORYmBqLhyHxQnNd7FA4ecxJjWeu77R3Uu9oSO84VK4d2zzsrsf0kCXDjlnw47fqMejJVH1wohzgT1VWpdNmND/GUoBwN8/jjFRDBqO5LRvn8Hh8lnMnIpwrVzmWRrzKJOPvivaavTPty5KaOiQSRZ8tu4QWimlact58swg+VeP/ghgRL9ZzSCt8uvbzruYqcPMjSMjKRTej5XqlDylFCuwrTzwUe71Am+6pw3pVqQYgkHloGEfWOBelIR9iuWMWYOwXFnDXO1S9Sv4n5KG3CMbLefaEAAsLn5xhsSicE/x7jcwRCA3HnD4Crztox1xdMGeUoNoBlr+jA6wQeP1DUZnK/jBdm7MzPFRoKgGzL6MCo3et7sOUDuOBaDfHl+dn1RUfwOpgyrFOy3AXeEbacjQ5hX4Elox3Ql07JMzzrK0UOZzUDeOteIT0oscjE9c1AVH0tNVGYyw1Du+Mir5Gzlj3so1E/KESfgNVWfmCxNYMywRHEVMsYdV6UuePm7wTpOdhQurqctET3Ycmtn1akp3kBVsPFDv14c4+mz1+VgVU7gZZuyOgRNN2S20OyELao85+40tkYx9E2x2bkDpW7sADn9PwvDtLX6wPSNnkElpXUaI=
     description: a secure DB password
     type: SecureString
     overwrite: false
+    envName: DB_PASSWORD
   - name: /{tenant}/{region}/{project_name}/version
     value: 1.0.0
     description: A dummy version
     type: String
     overwrite: false
+    envName: VERSION
   - name: /{tenant}/{region}/{project_name}/{stage}/version
     value: 1.0.0
     description: A dummy version
     type: String
     overwrite: true
+    envName: STAGED_VERSION
 _configurations:
   publicKeyPath: ./test.pub
   privateKeyPath: ./test.key
