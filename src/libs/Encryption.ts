@@ -52,9 +52,22 @@ export default class Encryption {
     data: Buffer,
     passphrase: string = ""
   ): Promise<Buffer> {
-    return privateDecrypt(
-      { key: this.privateKey, passphrase: passphrase },
-      data
-    );
+    try {
+      return privateDecrypt(
+        { key: this.privateKey, passphrase: passphrase },
+        data
+      );
+    } catch (e) {
+      if (
+        e.message.includes("error:1E08010C:DECODER routines::unsupported") ||
+        e.message.includes("error:1C800064:Provider routines::bad decrypt")
+      ) {
+        // TODO: Need to handle this case properly and ask the passphrase if required and TTY available.
+        throw new Error("Probably missing Passphrase");
+      }
+
+      throw e;
+    }
+
   }
 }

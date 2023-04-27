@@ -189,7 +189,8 @@ export default class Data {
           if (value.type === "SecureString")
             value.value = (
               await encryption.DecryptData(
-                Buffer.from(value.value.toString().split("$enc:")[1], "base64")
+                Buffer.from(value.value.toString().split("$enc:")[1], "base64"),
+                process.env.PASSPHRASE
               )
             ).toString();
           return value;
