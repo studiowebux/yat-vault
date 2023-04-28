@@ -243,25 +243,31 @@ The `envName` in the secret file, determines the **Key** of your parameter.
 
 ## Environment Variables
 
-| Name           | Description                                       |
-| -------------- | ------------------------------------------------- |
-| EDITOR         | Change the default editor ('vi')                  |
-| DEBUG          | Print Error Stack Trace                           |
-| PASSPHRASE     | Non interactive passphrase (CI)                   |
-| PRIVATE_KEY    | Non interactive Private Key (CI)                  |
-| PUBLIC_KEY     | Non interactive Public Key (CI)                   |
-| FILENAME       | Equivalent to --file-name                         |
-| KEYNAME        | Equivalent to --key-name                          |
-| PROVIDER       | Equivalent to --provider                          |
-| REGION         | Equivalent to --region                            |
-| ENV_FILENAME   | Equivalent to --env                               |
-| WITHOUT_QUOTES | Remove double quotes around values for .env files |
+| Name           | Description                                                         |
+| -------------- | ------------------------------------------------------------------- |
+| EDITOR         | Change the default editor ('vi')                                    |
+| DEBUG          | Print Error Stack Trace                                             |
+| PASSPHRASE     | Non interactive passphrase (CI)                                     |
+| PRIVATE_KEY    | Non interactive Private Key (CI)                                    |
+| PUBLIC_KEY     | Non interactive Public Key (CI)                                     |
+| FILENAME       | Equivalent to --file-name                                           |
+| KEYNAME        | Equivalent to --key-name                                            |
+| PROVIDER       | Equivalent to --provider                                            |
+| REGION         | Equivalent to --region                                              |
+| ENV_FILENAME   | Equivalent to --env                                                 |
+| WITHOUT_QUOTES | Remove double quotes around values for .env files                   |
+| NO_TTY         | Skip Asking passphrase on terminal (only value `true` is supported) |
 
 ---
 
 ## Changelog
 
 The [TODO](./TODO)
+
+### V1.0.6 - Alpha - 2023-04-26
+
+- Improved passphrase handling
+- Bug fixed regarding the passphrase
 
 ### V1.0.4 - Alpha - 2023-04-08
 

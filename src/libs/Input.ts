@@ -1,10 +1,6 @@
 import * as readline from "node:readline";
 import { stdin as input, stdout as output } from "node:process";
-
-interface RLInterface extends readline.Interface {
-  _writeToOutput?: Function;
-  output?: any;
-}
+import { RLInterface } from "../types/types";
 
 export default class Input {
   public async ReadInputHidden(question: string): Promise<string> {

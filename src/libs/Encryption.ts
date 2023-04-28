@@ -57,17 +57,17 @@ export default class Encryption {
         { key: this.privateKey, passphrase: passphrase },
         data
       );
-    } catch (e) {
+    } catch (e: any) {
       if (
         e.message.includes("error:1E08010C:DECODER routines::unsupported") ||
         e.message.includes("error:1C800064:Provider routines::bad decrypt")
       ) {
-        // TODO: Need to handle this case properly and ask the passphrase if required and TTY available.
-        throw new Error("Probably missing Passphrase");
+        throw new Error(
+          "ERR_DECRYPTION: Might be missing or wrong Passphrase for this private key"
+        );
       }
 
       throw e;
     }
-
   }
 }

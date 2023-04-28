@@ -1,6 +1,7 @@
 import Data from "../libs/Data";
 import Encryption from "../libs/Encryption";
 import Input from "../libs/Input";
+import { secret } from "../types/types";
 
 const input = new Input();
 
@@ -23,9 +24,23 @@ export default async function DecryptSecret(filename: string) {
     }
   }
 
-  const values = await data.DecryptValues(encryption);
+  let values: secret[] = [];
+  try {
+    values = await data.DecryptValues(encryption);
+  } catch (e: any) {
+    // Try to ask for a passphrase
+    if (process.env.NO_TTY === "true") {
+      // NO TTY, throw error
+      throw e;
+    }
+    if (e.message.includes("ERR_DECRYPTION")) {
+      const passphrase = await input.ReadInputHidden("Passphrase: ");
+      values = await data.DecryptValues(encryption, passphrase);
+    }
+  }
 
   // Print on console
+  if (!values || values.length === 0) return;
   console.table(values);
 
   // Output

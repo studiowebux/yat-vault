@@ -4,29 +4,7 @@ import { load, dump } from "js-yaml";
 import Encryption from "./Encryption";
 import { isBase64 } from "./Utils";
 import AwsLoader from "./Loader/aws.ssm";
-
-interface IAWS {
-  privateKeyPath: string;
-  publicKeyPath: string;
-  regions: Array<string>;
-  awsRegion: string;
-}
-
-interface configurations {
-  publicKeyPath: string;
-  privateKeyPath: string;
-  variables: Array<string | number>;
-  aws: IAWS;
-}
-
-interface secret {
-  name: string;
-  description?: string;
-  value: string | number;
-  type: "String" | "SecureString" | "StringList";
-  overwrite: boolean;
-  envName?: string;
-}
+import { configurations, secret, IAWS } from "../types/types";
 
 export default class Data {
   private secretFilename: string;
@@ -180,7 +158,8 @@ export default class Data {
   }
 
   public async DecryptValues(
-    encryption: Encryption | undefined
+    encryption: Encryption | undefined,
+    passphrase: string = ""
   ): Promise<Array<secret>> {
     let values = this.values || [];
     if (encryption) {
@@ -190,7 +169,7 @@ export default class Data {
             value.value = (
               await encryption.DecryptData(
                 Buffer.from(value.value.toString().split("$enc:")[1], "base64"),
-                process.env.PASSPHRASE
+                passphrase || process.env.PASSPHRASE
               )
             ).toString();
           return value;

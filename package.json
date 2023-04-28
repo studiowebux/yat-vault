@@ -1,9 +1,10 @@
 {
   "name": "@yetanothertool/yat-vault",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "private": false,
   "description": "Simple CLI tool to manage application secrets",
   "main": "build/index.js",
+  "types": "src/types/types.d.ts",
   "files": [
     "package.json",
     "package-lock.json",
