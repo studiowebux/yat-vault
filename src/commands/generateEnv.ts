@@ -1,14 +1,21 @@
+import { decryptSecret } from "../libs/CommandHelper";
 import Data from "../libs/Data";
 import Encryption from "../libs/Encryption";
 import Input from "../libs/Input";
+import Override from "../libs/Override";
 import Writer from "../libs/Writer";
+import { secret } from "../types/types";
 
 const input = new Input();
 
 export default async function GenerateEnv(
   filename: string,
-  envFilename: string
+  envFilename: string,
+  overrides: string
 ) {
+  // Variables
+  let overrideValues = {};
+
   // Inputs
   const _filename =
     process.env.FILENAME || filename || (await input.ReadInput("File Name: "));
@@ -21,6 +28,12 @@ export default async function GenerateEnv(
   if (!_filename) throw new Error("Missing File Name.");
   if (!_envFilename) throw new Error("Missing Env File Name.");
 
+  // Overrides
+  if (overrides) {
+    const override = new Override(overrides);
+    overrideValues = override.Load();
+  }
+
   // Processing
   const data = new Data(_filename);
   let encryption: Encryption | undefined;
@@ -32,7 +45,9 @@ export default async function GenerateEnv(
     }
   }
 
-  const values = await data.DecryptValues(encryption);
+  // Decrypt values
+  let values: secret[] = [];
+  values = await decryptSecret(data, encryption, overrideValues);
 
   let content = "";
   if (process.env.WITHOUT_QUOTES) {

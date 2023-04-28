@@ -1,17 +1,31 @@
+import { decryptSecret } from "../libs/CommandHelper";
 import Data from "../libs/Data";
 import Encryption from "../libs/Encryption";
 import Input from "../libs/Input";
+import Override from "../libs/Override";
 import { secret } from "../types/types";
 
 const input = new Input();
 
-export default async function DecryptSecret(filename: string) {
+export default async function DecryptSecret(
+  filename: string,
+  overrides: string
+) {
+  // Variables
+  let overrideValues = {};
+
   // Inputs
   const _filename =
     process.env.FILENAME || filename || (await input.ReadInput("File Name: "));
 
   // Verifications
   if (!_filename) throw new Error("Missing File Name.");
+
+  // Overrides
+  if (overrides) {
+    const override = new Override(overrides);
+    overrideValues = override.Load();
+  }
 
   // Processing
   const data = new Data(_filename);
@@ -24,20 +38,9 @@ export default async function DecryptSecret(filename: string) {
     }
   }
 
+  // Decrypt values
   let values: secret[] = [];
-  try {
-    values = await data.DecryptValues(encryption);
-  } catch (e: any) {
-    // Try to ask for a passphrase
-    if (process.env.NO_TTY === "true") {
-      // NO TTY, throw error
-      throw e;
-    }
-    if (e.message.includes("ERR_DECRYPTION")) {
-      const passphrase = await input.ReadInputHidden("Passphrase: ");
-      values = await data.DecryptValues(encryption, passphrase);
-    }
-  }
+  values = await decryptSecret(data, encryption, overrideValues);
 
   // Print on console
   if (!values || values.length === 0) return;

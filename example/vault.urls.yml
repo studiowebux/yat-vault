@@ -1,0 +1,50 @@
+_values:
+  - name: /test/db
+    value: "postgres://localhost:${databaseName:-default}"
+    description: ""
+    type: String
+    overwrite: false
+    envName: LOCAL_URL
+  - name: /test/local_url
+    value: "https://localhost:${local_port:-3000}"
+    description: ""
+    type: String
+    overwrite: false
+    envName: LOCAL_URL
+  - name: /test/local_url_1
+    value: "https://localhost:${localPort:-3000}"
+    description: ""
+    type: String
+    overwrite: false
+    envName: LOCAL_URL_1
+  - name: /test/local_url_2
+    value: "https://localhost:${local_port}"
+    description: ""
+    type: String
+    overwrite: false
+    envName: LOCAL_URL_2
+  - name: /test/local_url_3
+    value: "https://localhost:${localPort}"
+    description: ""
+    type: String
+    overwrite: false
+    envName: LOCAL_URL_3
+  - name: /test/local_url_4
+    value: "https://localhost:${localPort}/a${local_port}/b${local_porte:-3000}"
+    description: ""
+    type: String
+    overwrite: false
+    envName: LOCAL_URL_4
+  - name: /test/local_url_5
+    value: "https://localhost:1${local_port}/2${local_port}/3${local_port:-3000}/4${local_port:-abc}/5${local_porte:-abc}"
+    description: ""
+    type: String
+    overwrite: false
+    envName: LOCAL_URL_5
+  - name: /test/local_url_5
+    value: "https://localhost:1${local_port}/6${local_porte:-abc}/3${local_port:-3000}/4${local_port:-abc}/5${local_porte:-abc}"
+    description: ""
+    type: String
+    overwrite: false
+    envName: LOCAL_URL_5
+_configurations:

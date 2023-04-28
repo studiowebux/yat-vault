@@ -35,7 +35,7 @@ const argv = parseArgs(process.argv.slice(2));
     }
 
     if (argv["print"]) {
-      return await DecryptSecret(argv["filename"]);
+      return await DecryptSecret(argv["filename"], argv["overrides"]);
     }
 
     if (argv["sync"]) {
@@ -51,7 +51,11 @@ const argv = parseArgs(process.argv.slice(2));
     }
 
     if (argv["dotenv"]) {
-      return await GenerateEnv(argv["filename"], argv["env"]);
+      return await GenerateEnv(
+        argv["filename"],
+        argv["env"],
+        argv["overrides"]
+      );
     }
 
     PrintHelp();

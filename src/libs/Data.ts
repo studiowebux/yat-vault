@@ -4,7 +4,7 @@ import { load, dump } from "js-yaml";
 import Encryption from "./Encryption";
 import { isBase64 } from "./Utils";
 import AwsLoader from "./Loader/aws.ssm";
-import { configurations, secret, IAWS } from "../types/types";
+import { configurations, secret, IAWS, IOverride } from "../types/types";
 
 export default class Data {
   private secretFilename: string;
@@ -157,27 +157,77 @@ export default class Data {
     this.values = data;
   }
 
+  private async handleDefaultsAndOverrides(
+    overrides: IOverride
+  ): Promise<Array<secret>> {
+    return Promise.all(
+      this.values?.map(async (value) => {
+        // Apply overrides if any
+        if (overrides) {
+          Object.keys(overrides).forEach((key) => {
+            value.value = value.value.toString().replaceAll(
+              new RegExp(`\\$\\{(${key})\\}|\\$\\{(${key}:-(.*?))\\}`, "g"), // `\\$\\{${key}.*?\\}`
+              overrides[key]
+            );
+          });
+        }
+
+        // Apply defaults if any
+        // Extract default value if any
+        console.debug(value?.value?.toString());
+        const regex = new RegExp(`\\$\\{.*?:-(.*?)\\}`);
+        const val = value?.value?.toString().match(regex);
+        if (val && val.length > 0) {
+          console.debug(val);
+          // Replace the variable with the default value
+          value.value = value.value
+            .toString()
+            .replaceAll(
+              new RegExp(`\\$\\{[\\w\\d\\s]+:-[\\w\\d\\s]+\\}`, "g"),
+              val[1].toString()
+            );
+          console.log(value);
+        }
+
+        return value;
+      }) || []
+    );
+  }
+
   public async DecryptValues(
     encryption: Encryption | undefined,
-    passphrase: string = ""
+    passphrase: string = "",
+    overrides: IOverride = {}
   ): Promise<Array<secret>> {
-    let values = this.values || [];
-    if (encryption) {
-      values = await Promise.all(
-        this.values?.map(async (value) => {
-          if (value.type === "SecureString")
-            value.value = (
-              await encryption.DecryptData(
-                Buffer.from(value.value.toString().split("$enc:")[1], "base64"),
-                passphrase || process.env.PASSPHRASE
-              )
-            ).toString();
-          return value;
-        }) || []
-      );
-    }
+    try {
+      let values = this.values || [];
+      if (encryption) {
+        values = await Promise.all(
+          this.values?.map(async (value) => {
+            // Decrypt secrets.
+            if (value.type === "SecureString") {
+              value.value = (
+                await encryption.DecryptData(
+                  Buffer.from(
+                    value.value.toString().split("$enc:")[1],
+                    "base64"
+                  ),
+                  passphrase || process.env.PASSPHRASE
+                )
+              ).toString();
+            }
+            return value;
+          }) || []
+        );
+      }
 
-    return Promise.resolve(values);
+      // Handle defaults and overrides
+      values = await this.handleDefaultsAndOverrides(overrides);
+
+      return Promise.resolve(values);
+    } catch (e) {
+      throw e;
+    }
   }
 
   public GetConfig(provider: string): IAWS | null {

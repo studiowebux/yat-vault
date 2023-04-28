@@ -1,8 +1,10 @@
+import { decryptSecret } from "../libs/CommandHelper";
 import Data from "../libs/Data";
 import Encryption from "../libs/Encryption";
 import Input from "../libs/Input";
 import AwsSSM from "../libs/Store/ssm.aws";
 import { deepCopy } from "../libs/Utils";
+import { secret } from "../types/types";
 
 const input = new Input();
 
@@ -24,7 +26,10 @@ export default async function SyncSecrets(filename: string) {
       encryption = new Encryption(privateKey, publicKey);
     }
   }
-  const values = await data.DecryptValues(encryption);
+
+  // Decrypt values
+  let values: secret[] = [];
+  values = await decryptSecret(data, encryption);
 
   console.log("aws.ssm: Starting Sync");
   const awsProcessingPerRequestedRegions =

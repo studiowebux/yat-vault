@@ -27,3 +27,7 @@ interface RLInterface extends readline.Interface {
   _writeToOutput?: Function;
   output?: any;
 }
+
+interface IOverride {
+  [key: string]: string;
+}

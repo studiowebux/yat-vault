@@ -165,6 +165,24 @@ You simply prepend: `env:` followed by the environment name.
 This object has the `regions` array, it let you deploy quickly using the multi region approach.
 the variable `{region}` automatically resolves to the current region, this way you can specify the region in the parameter name if needed.
 
+**Variables within values and overrides**:
+
+This feature must respect a format: `${my_variable:-defaultValue}` or `${my_variable}`. **_Very similar to bash_**
+
+Where `my_variable` is the name used in your overrides file (See the [Example](example/local.config.json))
+and `defaultValue` is the value to use in case that the override file isn't present or the variable isn't overidden.
+
+The `:-` it means that the left part is the variable name and the right part the default value. This flag is optional. If not define, there is no default value, thus the variable will stay as-is
+
+_Character allowed:_
+
+- `a-z` and `A-Z`
+- `0-9`
+- `underscores ( _ )`
+- I didn't test other characters. I know that _dashes ( - ) WON'T WORK_.
+
+The goal of this feature is to let developers configure their local environment quickly and easily and still use the same configuration that the cloud (or deployed) infrastructure has. This way the setup is self documented and the configuration follows everywhere.
+
 ---
 
 ### Edit Secret File
@@ -185,10 +203,11 @@ It opens `vi` to let you update your configuration, once you save the file, it a
 > **Be careful, this command expose all your secrets on your terminal !**
 
 ```bash
-yat-vault --print --filename test.yml
+yat-vault --print --filename test.yml --overrides config.local.json
 ```
 
-It decrypts and prints all values on your screen.
+It decrypts and prints all values on your screen.  
+The `--overrides filename.json` let you use the variables see above for more details
 
 ---
 
@@ -234,10 +253,32 @@ This command is verbose to let you know what is going on.
 ### Generate .env file
 
 ```bash
-yat-vault --dotenv --filename test.yml --env .env.test
+yat-vault --dotenv --filename test.yml --env .env.test --overrides config.local.json
 ```
 
-The `envName` in the secret file, determines the **Key** of your parameter.
+The `envName` in the secret file, determines the **Key** of your parameter.  
+The `--overrides filename.json` let you use the variables see above for more details
+
+### Values and Variables - Overrides and Defaults
+
+The simplest way to explain that feature is to look this example:
+
+- [config.local.json](example/local.config.json)
+- [vault.urls.yml](example/vault.urls.yml)
+
+Then these commands:
+
+```bash
+yat-vault --print --filename example/vault.urls.yml --overrides example/local.config.json
+yat-vault --print --filename example/vault.urls.yml
+yat-vault --dotenv --filename example/vault.urls.yml --overrides example/local.config.json --env example/.env.local
+cat example/.env.local
+yat-vault --dotenv --filename example/vault.urls.yml --env example/.env.local
+cat example/.env.local
+```
+
+It allows you to specify varibales with optional default values. Then you can define a JSON to set the values.
+For more details [Create new Secret File](#create-new-secret-file)
 
 ---
 
@@ -264,7 +305,13 @@ The `envName` in the secret file, determines the **Key** of your parameter.
 
 The [TODO](./TODO)
 
-### V1.0.6 - Alpha - 2023-04-26
+### V1.1.0 - Alpha - 2023-04-26
+
+- Added new feature
+- you can specify variables within the values and load a JSON file to replace those values, plus you can specify default values
+- Documentation for the new feature
+
+### V1.0.5 & V1.0.6 - Alpha - 2023-04-26
 
 - Improved passphrase handling
 - Bug fixed regarding the passphrase
