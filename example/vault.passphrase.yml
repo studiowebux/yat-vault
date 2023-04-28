@@ -1,0 +1,12 @@
+_values:
+  - name: /test/foo
+    value: >-
+      $enc:K0abNp4WW6qQcavW3AT2UO3vUaCEpt5TCzLbzpes3H2MgrAtvOpNaFq9/+kPGG9g7zZRs7yV4ktyQxx3+hB3DTuoy5QG81NQLgefKqIBwY7QJpQUnmRNbPdfGo+jq7BNeUo0KauRzUwlV9X6hjMUUsCUktF4pNYTtGHLXSfX614edHXPi+PcMmMwXvzPme092TCtTtrpY83R4NweQDZRDMWiGddwuny8fZYCzu3Et6cqxvUHKDgHzPux5IMMA4iV8vIT6PK1ul9et5ue2+nCvJCQNPe4rHiJ5raNPioxbg2zo7g9GmqQ5+t36oWJNPLRduHPjwpCYbbLjN6xCp4aAduexpJLg0cXkwc/Fwd9ftPmjzi92gfppGAgUX5ZXjau4AaQaDZdfjEvrD0rGy5fYiQe4ND8an7OEVg+6s15wgqL9tyonEAfX+vZnlMOmdNgIu36zalfHsooGissMUg7wMaujvHP49iqaWir/5h031atED59UiVoeowvJ2m1NckTQTQXfv2Bf4AHxQhvLIumS/o5gBAstQSAH4NziC4Tf+oDDWSUIVe9L5OL56IjnQgscside6TKR6+40k4bf/0YT9x28YG1ikf/cpGvSgDU2T+g/t4wLgM//9twZ6wsiRuaLO9Ef//gwkviGdf9Kc4XfhCd5D0prKuEj/ORBppewbA=
+    description: ''
+    type: SecureString
+    overwrite: false
+    envName: FOO_BAR
+_configurations:
+  publicKeyPath: ./withpassphrase.pub
+  privateKeyPath: ./withpassphrase.key
+  variables: []
