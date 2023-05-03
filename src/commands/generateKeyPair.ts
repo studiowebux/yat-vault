@@ -2,6 +2,8 @@ import Encryption from "../libs/Encryption";
 import Writer from "../libs/Writer";
 import Input from "../libs/Input";
 import Reader from "../libs/Reader";
+import { Success, Warn } from "../libs/Help";
+import { Color } from "../libs/Colors";
 
 const input = new Input();
 
@@ -14,7 +16,7 @@ export default async function GenerateKeyPair(keyname: string) {
 
   // Verifications
   if (!_keyname) throw new Error("Missing Key Name.");
-  if (!_passphrase) console.error("WARN: No Passphrase provided.");
+  if (!_passphrase) Warn("No Passphrase provided.");
   if (Reader.Exists(`${_keyname}.pub`) || Reader.Exists(`${_keyname}.key`))
     throw new Error("The key pair already exists.");
 
@@ -26,5 +28,10 @@ export default async function GenerateKeyPair(keyname: string) {
   Writer.Save(`${_keyname}.key`, privateKey);
 
   // Output
-  console.log("SUCCESS: Key Pair Generated !");
+  Success(
+    `Key Pair Generated at ${Color(
+      `'${_keyname}.pub and ${_keyname}.key'`,
+      "Bold"
+    )} !`
+  );
 }

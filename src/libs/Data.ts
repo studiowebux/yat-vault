@@ -5,6 +5,8 @@ import Encryption from "./Encryption";
 import { isBase64 } from "./Utils";
 import AwsLoader from "./Loader/aws.ssm";
 import { configurations, secret, IAWS, IOverride } from "../types/types";
+import { Info, Success, Warn } from "./Help";
+import { Color } from "./Colors";
 
 export default class Data {
   private secretFilename: string;
@@ -59,21 +61,31 @@ export default class Data {
   public async GetPrivateKey(): Promise<string | undefined> {
     let filename = null;
 
-    if (this.configurations?.aws?.privateKeyPath)
+    if (this.configurations?.aws?.privateKeyPath) {
       try {
+        Info(
+          `Trying to get Private Key from AWS SSM: ${this.configurations?.aws.privateKeyPath}`
+        );
         const key = await this.awsLoader?.LoadPrivateKey(
           this.configurations?.aws.privateKeyPath
         );
         return Promise.resolve(key);
       } catch (e: any) {
-        console.error(
-          `WARN: aws.ssm: Path defined but '${e.message}' - '${this.configurations.aws.awsRegion}' -> '${this.configurations.aws.privateKeyPath}'`
+        Warn(
+          `aws.ssm: Path defined but '${e.message}' - '${this.configurations.aws.awsRegion}' -> '${this.configurations.aws.privateKeyPath}'`
         );
       }
-    if (this.configurations?.privateKeyPath)
+    }
+    if (this.configurations?.privateKeyPath) {
+      Info(
+        `Trying to get Private Key from Local Disk: ${this.configurations?.privateKeyPath}`
+      );
       filename = this.configurations?.privateKeyPath;
-    if (process.env.PRIVATE_KEY)
+    }
+    if (process.env.PRIVATE_KEY) {
+      Info(`Trying to get Private Key from environment variable`);
       return Promise.resolve(this.ExtractKeyValue(process.env.PRIVATE_KEY));
+    }
 
     if (filename) {
       return Promise.resolve(
@@ -83,29 +95,39 @@ export default class Data {
       );
     }
 
-    console.error(
-      "WARN: No private key defined. You will be unable to Encrypt or Decrypt secrets"
+    Warn(
+      "No private key defined. You will be unable to Encrypt or Decrypt secrets"
     );
   }
 
   public async GetPublicKey(): Promise<string | undefined> {
     let filename = null;
 
-    if (this.configurations?.aws?.publicKeyPath)
+    if (this.configurations?.aws?.publicKeyPath) {
+      Info(
+        `Trying to get Public Key from AWS SSM: ${this.configurations?.aws.publicKeyPath}`
+      );
       try {
         const key = await this.awsLoader?.LoadPublicKey(
           this.configurations?.aws.publicKeyPath
         );
         return Promise.resolve(key);
       } catch (e: any) {
-        console.error(
-          `WARN: aws.ssm: Path defined but '${e.message}' - '${this.configurations.aws.awsRegion}' -> '${this.configurations.aws.publicKeyPath}'`
+        Warn(
+          `aws.ssm: Path defined but '${e.message}' - '${this.configurations.aws.awsRegion}' -> '${this.configurations.aws.publicKeyPath}'`
         );
       }
-    if (this.configurations?.publicKeyPath)
+    }
+    if (this.configurations?.publicKeyPath) {
+      Info(
+        `Trying to get Public Key from Local Disk: ${this.configurations?.publicKeyPath}`
+      );
       filename = this.configurations?.publicKeyPath;
-    if (process.env.PUBLIC_KEY)
+    }
+    if (process.env.PUBLIC_KEY) {
+      Info(`Trying to get Public Key from environment variable`);
       return Promise.resolve(this.ExtractKeyValue(process.env.PUBLIC_KEY));
+    }
 
     if (filename) {
       return Promise.resolve(
@@ -115,9 +137,7 @@ export default class Data {
       );
     }
 
-    console.error(
-      "WARN: No public key defined. You will be unable to Encrypt secrets"
-    );
+    Warn("No public key defined. You will be unable to Encrypt secrets");
   }
 
   public GetValues(): Array<secret> | null {
@@ -133,9 +153,14 @@ export default class Data {
 
   public HasSecrets(): boolean {
     if (!this.values) return false;
-    return (
-      this.values?.filter((value) => value.type === "SecureString").length > 0
-    );
+
+    const hasSecrets =
+      this.values?.filter((value) => value.type === "SecureString").length > 0;
+
+    if (hasSecrets) {
+      Info("Configuration contains secret(s), will load keys");
+    }
+    return hasSecrets;
   }
 
   public EncryptValues(encryption: Encryption): void {
@@ -144,10 +169,14 @@ export default class Data {
         if (
           value.type === "SecureString" &&
           !value.value.toString().startsWith("$enc:")
-        )
+        ) {
+          Info(`Encrypting ${Color(value.name, "FgGray")}...`);
           value.value = `$enc:${encryption
             .EncryptData(Buffer.from(value.value.toString()))
             .toString("base64")}`;
+          Success(`${Color(value.name, "FgGray")} encrypted.`);
+        }
+
         return value;
       }) || []
     );
@@ -163,22 +192,21 @@ export default class Data {
     return Promise.all(
       this.values?.map(async (value) => {
         // Apply overrides if any
-        if (overrides) {
+        if (overrides && Object.keys(overrides).length > 0) {
           Object.keys(overrides).forEach((key) => {
             value.value = value.value.toString().replaceAll(
               new RegExp(`\\$\\{(${key})\\}|\\$\\{(${key}:-(.*?))\\}`, "g"), // `\\$\\{${key}.*?\\}`
               overrides[key]
             );
           });
+          Success(`Applied overrides for ${Color(value.name, "FgGray")}`);
         }
 
         // Apply defaults if any
         // Extract default value if any
-        console.debug(value?.value?.toString());
         const regex = new RegExp(`\\$\\{.*?:-(.*?)\\}`);
         const val = value?.value?.toString().match(regex);
         if (val && val.length > 0) {
-          console.debug(val);
           // Replace the variable with the default value
           value.value = value.value
             .toString()
@@ -186,7 +214,7 @@ export default class Data {
               new RegExp(`\\$\\{[\\w\\d\\s]+:-[\\w\\d\\s]+\\}`, "g"),
               val[1].toString()
             );
-          console.log(value);
+          Success(`Applied defaults for ${Color(value.name, "FgGray")}`);
         }
 
         return value;
@@ -206,6 +234,7 @@ export default class Data {
           this.values?.map(async (value) => {
             // Decrypt secrets.
             if (value.type === "SecureString") {
+              Info(`Decrypting ${Color(value.name, "FgGray")}`);
               value.value = (
                 await encryption.DecryptData(
                   Buffer.from(
@@ -215,6 +244,8 @@ export default class Data {
                   passphrase || process.env.PASSPHRASE
                 )
               ).toString();
+
+              Success(`${Color(value.name, "FgGray")} decrypted.`);
             }
             return value;
           }) || []

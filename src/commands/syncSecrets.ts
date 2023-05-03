@@ -1,6 +1,8 @@
+import { Color } from "../libs/Colors";
 import { decryptSecret } from "../libs/CommandHelper";
 import Data from "../libs/Data";
 import Encryption from "../libs/Encryption";
+import { Success } from "../libs/Help";
 import Input from "../libs/Input";
 import AwsSSM from "../libs/Store/ssm.aws";
 import { deepCopy } from "../libs/Utils";
@@ -31,7 +33,7 @@ export default async function SyncSecrets(filename: string) {
   let values: secret[] = [];
   values = await decryptSecret(data, encryption);
 
-  console.log("aws.ssm: Starting Sync");
+  console.log(Color("⇪", "FgBlue"), "aws.ssm: Starting Sync");
   const awsProcessingPerRequestedRegions =
     data.GetConfig("aws")?.regions?.map((region) => {
       const ssm = new AwsSSM({}, region, data.GetVariables());
@@ -39,8 +41,8 @@ export default async function SyncSecrets(filename: string) {
     }) || [];
 
   await Promise.all(awsProcessingPerRequestedRegions);
-  console.log("aws.ssm: Sync Completed");
+  Success("aws.ssm: Sync Completed");
 
   // Output
-  console.log("SUCCESS: Values Synced !");
+  Success("Values Synced !");
 }

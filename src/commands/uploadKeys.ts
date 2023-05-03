@@ -1,4 +1,5 @@
 import Data from "../libs/Data";
+import { Success } from "../libs/Help";
 import Input from "../libs/Input";
 import AwsLoader from "../libs/Loader/aws.ssm";
 
@@ -33,5 +34,5 @@ export default async function UploadKeys(
   );
 
   // Output
-  console.log("SUCCESS: Keys Uploaded !");
+  Success("Keys Uploaded to aws ssm!");
 }

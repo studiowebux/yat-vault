@@ -4,6 +4,8 @@ import Encryption from "../libs/Encryption";
 import Input from "../libs/Input";
 import Override from "../libs/Override";
 import { secret } from "../types/types";
+import { Info, Success } from "../libs/Help";
+import { printValues } from "../libs/Print";
 
 const input = new Input();
 
@@ -23,6 +25,7 @@ export default async function DecryptSecret(
 
   // Overrides
   if (overrides) {
+    Info("Overrides is defined. Will load the values and apply the changes.");
     const override = new Override(overrides);
     overrideValues = override.Load();
   }
@@ -35,6 +38,8 @@ export default async function DecryptSecret(
     const publicKey = (await data.GetPublicKey()) as string;
     if (Encryption.HasKeyPair(privateKey, publicKey)) {
       encryption = new Encryption(privateKey, publicKey);
+    } else {
+      throw new Error("Unable to decrypt the file, missing keys.");
     }
   }
 
@@ -44,8 +49,8 @@ export default async function DecryptSecret(
 
   // Print on console
   if (!values || values.length === 0) return;
-  console.table(values);
+  printValues(values);
 
   // Output
-  console.log("SUCCESS: Values Decrypted !");
+  Success("Values Decrypted !");
 }

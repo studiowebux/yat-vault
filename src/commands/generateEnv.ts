@@ -1,6 +1,8 @@
+import { Color } from "../libs/Colors";
 import { decryptSecret } from "../libs/CommandHelper";
 import Data from "../libs/Data";
 import Encryption from "../libs/Encryption";
+import { Info, Success } from "../libs/Help";
 import Input from "../libs/Input";
 import Override from "../libs/Override";
 import Writer from "../libs/Writer";
@@ -51,10 +53,12 @@ export default async function GenerateEnv(
 
   let content = "";
   if (process.env.WITHOUT_QUOTES) {
+    Info("Saving values without quotes");
     content = values
       .map((value) => `${value.envName}=${value.value}`)
       .join("\n");
   } else {
+    Info("Saving values with double quotes");
     content = values
       .map((value) => `${value.envName}="${value.value}"`)
       .join("\n");
@@ -63,5 +67,5 @@ export default async function GenerateEnv(
   Writer.Save(_envFilename, content);
 
   // Output
-  console.log("SUCCESS: .env file Generated !");
+  Success(`${Color(_envFilename, "Bold")} file Generated !`);
 }

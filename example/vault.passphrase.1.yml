@@ -1,0 +1,17 @@
+_values:
+  - name: 'Bonjour'
+    value: 'Bonjour'
+    description: 'Hi'
+    type: SecureString
+    overwrite: false
+    envName: ''
+_configurations:
+  publicKeyPath: ''
+  privateKeyPath: ''
+  variables: []
+  aws:
+    privateKeyPath: /yat-vault/private-key
+    publicKeyPath: /yat-vault/public-key
+    awsRegion: us-east-1
+    regions:
+      - us-east-1

@@ -4,6 +4,8 @@ import {
   PutParameterCommand,
 } from "@aws-sdk/client-ssm";
 import Store from "../Store";
+import { Info } from "../Help";
+import { Color } from "../Colors";
 
 export default class AwsSSM extends Store {
   private client: SSMClient | undefined;
@@ -25,7 +27,7 @@ export default class AwsSSM extends Store {
 
   public async Sync(data: Array<any>): Promise<Object> {
     const _data = [...data];
-    console.log(`aws.ssm: Processing '${this.region}'`);
+    console.log(Color("⇪", "FgBlue"), `aws.ssm: Processing '${this.region}'`);
     return Promise.all(
       this.ReplaceVariables(_data).map((item) =>
         this.client
@@ -43,8 +45,14 @@ export default class AwsSSM extends Store {
               e.message.includes("The parameter already exists.") &&
               item.overwrite === false
             ) {
-              console.log(
-                `${this.storeType}: Update for ${item.name} Skipped. Reason: No Overwrite requested.`
+              Info(
+                `${this.storeType}: Update for ${Color(
+                  item.name,
+                  "Bold"
+                )} ${Color(
+                  "Skipped",
+                  "FgYellow"
+                )}. Reason: No Overwrite requested.`
               );
               return;
             } else throw e;
