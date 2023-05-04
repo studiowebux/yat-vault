@@ -306,7 +306,7 @@ For more details [Create new Secret File](#create-new-secret-file)
 
 The [TODO](./TODO)
 
-### V1.2.0 - Alpha - 2023-05-03
+### V1.2.1 - Alpha - 2023-05-03
 
 - Improved CLI Output (Colors, status, messages, error handling)
 - Improve AWS Interactions and error handling when syncing values to AWS
