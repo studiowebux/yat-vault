@@ -4,7 +4,7 @@ import Encryption from "../libs/Encryption";
 import Input from "../libs/Input";
 import Override from "../libs/Override";
 import { secret } from "../types/types";
-import { Info, Success } from "../libs/Help";
+import { LogInfo, LogSuccess } from "../libs/Help";
 import { printValues } from "../libs/Print";
 
 const input = new Input();
@@ -25,7 +25,9 @@ export default async function DecryptSecret(
 
   // Overrides
   if (overrides) {
-    Info("Overrides is defined. Will load the values and apply the changes.");
+    LogInfo(
+      "Overrides is defined. Will load the values and apply the changes."
+    );
     const override = new Override(overrides);
     overrideValues = override.Load();
   }
@@ -52,5 +54,5 @@ export default async function DecryptSecret(
   printValues(values);
 
   // Output
-  Success("Values Decrypted !");
+  LogSuccess("Values Decrypted !");
 }

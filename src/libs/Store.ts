@@ -1,3 +1,5 @@
+import { Color } from "./Colors";
+import { LogInfo } from "./Help";
 import { fromEnv } from "./Utils";
 
 export default abstract class Store {
@@ -35,9 +37,12 @@ export default abstract class Store {
       return item;
     });
     Object.values(updatedData).forEach((i: any) =>
-      console.log(
-        `${this.storeType}: Key to Sync => ${i.name} (Overwrite ${
-          i.overwrite ? "ON" : "OFF"
+      LogInfo(
+        `${this.storeType}: Key to Sync => ${Color(
+          i.name,
+          "Underscore"
+        )} (Overwrite ${
+          i.overwrite ? Color("ON", "FgCyan") : Color("OFF", "FgMagenta")
         })`
       )
     );

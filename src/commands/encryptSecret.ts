@@ -1,6 +1,6 @@
 import Data from "../libs/Data";
 import Encryption from "../libs/Encryption";
-import { Success } from "../libs/Help";
+import { LogSuccess } from "../libs/Help";
 import Input from "../libs/Input";
 
 const input = new Input();
@@ -33,5 +33,5 @@ export default async function EncryptSecret(filename: string) {
   data.Save();
 
   // Output
-  Success("File Saved !");
+  LogSuccess("File Saved !");
 }

@@ -5,7 +5,7 @@ import Encryption from "./Encryption";
 import { isBase64 } from "./Utils";
 import AwsLoader from "./Loader/aws.ssm";
 import { configurations, secret, IAWS, IOverride } from "../types/types";
-import { Info, Success, Warn } from "./Help";
+import { LogInfo, LogSuccess, LogWarn } from "./Help";
 import { Color } from "./Colors";
 
 export default class Data {
@@ -58,12 +58,19 @@ export default class Data {
       : value;
   }
 
-  public async GetPrivateKey(): Promise<string | undefined> {
+  /**
+   *
+   * @param skipCloudConfig Allow to upload and update the keys in AWS by using the one stored locally
+   * @returns
+   */
+  public async GetPrivateKey(
+    skipCloudConfig: boolean = false
+  ): Promise<string | undefined> {
     let filename = null;
 
-    if (this.configurations?.aws?.privateKeyPath) {
+    if (!skipCloudConfig && this.configurations?.aws?.privateKeyPath) {
       try {
-        Info(
+        LogInfo(
           `Trying to get Private Key from AWS SSM: ${this.configurations?.aws.privateKeyPath}`
         );
         const key = await this.awsLoader?.LoadPrivateKey(
@@ -71,19 +78,19 @@ export default class Data {
         );
         return Promise.resolve(key);
       } catch (e: any) {
-        Warn(
+        LogWarn(
           `aws.ssm: Path defined but '${e.message}' - '${this.configurations.aws.awsRegion}' -> '${this.configurations.aws.privateKeyPath}'`
         );
       }
     }
     if (this.configurations?.privateKeyPath) {
-      Info(
+      LogInfo(
         `Trying to get Private Key from Local Disk: ${this.configurations?.privateKeyPath}`
       );
       filename = this.configurations?.privateKeyPath;
     }
     if (process.env.PRIVATE_KEY) {
-      Info(`Trying to get Private Key from environment variable`);
+      LogInfo(`Trying to get Private Key from environment variable`);
       return Promise.resolve(this.ExtractKeyValue(process.env.PRIVATE_KEY));
     }
 
@@ -95,16 +102,23 @@ export default class Data {
       );
     }
 
-    Warn(
+    LogWarn(
       "No private key defined. You will be unable to Encrypt or Decrypt secrets"
     );
   }
 
-  public async GetPublicKey(): Promise<string | undefined> {
+  /**
+   *
+   * @param skipCloudConfig Allow to upload and update the keys in AWS by using the one stored locally
+   * @returns
+   */
+  public async GetPublicKey(
+    skipCloudConfig: boolean = false
+  ): Promise<string | undefined> {
     let filename = null;
 
-    if (this.configurations?.aws?.publicKeyPath) {
-      Info(
+    if (!skipCloudConfig && this.configurations?.aws?.publicKeyPath) {
+      LogInfo(
         `Trying to get Public Key from AWS SSM: ${this.configurations?.aws.publicKeyPath}`
       );
       try {
@@ -113,19 +127,19 @@ export default class Data {
         );
         return Promise.resolve(key);
       } catch (e: any) {
-        Warn(
+        LogWarn(
           `aws.ssm: Path defined but '${e.message}' - '${this.configurations.aws.awsRegion}' -> '${this.configurations.aws.publicKeyPath}'`
         );
       }
     }
     if (this.configurations?.publicKeyPath) {
-      Info(
+      LogInfo(
         `Trying to get Public Key from Local Disk: ${this.configurations?.publicKeyPath}`
       );
       filename = this.configurations?.publicKeyPath;
     }
     if (process.env.PUBLIC_KEY) {
-      Info(`Trying to get Public Key from environment variable`);
+      LogInfo(`Trying to get Public Key from environment variable`);
       return Promise.resolve(this.ExtractKeyValue(process.env.PUBLIC_KEY));
     }
 
@@ -137,7 +151,7 @@ export default class Data {
       );
     }
 
-    Warn("No public key defined. You will be unable to Encrypt secrets");
+    LogWarn("No public key defined. You will be unable to Encrypt secrets");
   }
 
   public GetValues(): Array<secret> | null {
@@ -158,7 +172,7 @@ export default class Data {
       this.values?.filter((value) => value.type === "SecureString").length > 0;
 
     if (hasSecrets) {
-      Info("Configuration contains secret(s), will load keys");
+      LogInfo("Configuration contains secret(s), will load keys");
     }
     return hasSecrets;
   }
@@ -170,11 +184,11 @@ export default class Data {
           value.type === "SecureString" &&
           !value.value.toString().startsWith("$enc:")
         ) {
-          Info(`Encrypting ${Color(value.name, "FgGray")}...`);
+          LogInfo(`Encrypting ${Color(value.name, "FgGray")}...`);
           value.value = `$enc:${encryption
             .EncryptData(Buffer.from(value.value.toString()))
             .toString("base64")}`;
-          Success(`${Color(value.name, "FgGray")} encrypted.`);
+          LogSuccess(`${Color(value.name, "FgGray")} encrypted.`);
         }
 
         return value;
@@ -199,7 +213,7 @@ export default class Data {
               overrides[key]
             );
           });
-          Success(`Applied overrides for ${Color(value.name, "FgGray")}`);
+          LogSuccess(`Applied overrides for ${Color(value.name, "FgGray")}`);
         }
 
         // Apply defaults if any
@@ -214,7 +228,7 @@ export default class Data {
               new RegExp(`\\$\\{[\\w\\d\\s]+:-[\\w\\d\\s]+\\}`, "g"),
               val[1].toString()
             );
-          Success(`Applied defaults for ${Color(value.name, "FgGray")}`);
+          LogSuccess(`Applied defaults for ${Color(value.name, "FgGray")}`);
         }
 
         return value;
@@ -234,7 +248,7 @@ export default class Data {
           this.values?.map(async (value) => {
             // Decrypt secrets.
             if (value.type === "SecureString") {
-              Info(`Decrypting ${Color(value.name, "FgGray")}`);
+              LogInfo(`Decrypting ${Color(value.name, "FgGray")}`);
               value.value = (
                 await encryption.DecryptData(
                   Buffer.from(
@@ -245,7 +259,7 @@ export default class Data {
                 )
               ).toString();
 
-              Success(`${Color(value.name, "FgGray")} decrypted.`);
+              LogSuccess(`${Color(value.name, "FgGray")} decrypted.`);
             }
             return value;
           }) || []

@@ -1,6 +1,6 @@
 import Data from "../libs/Data";
 import Encryption from "../libs/Encryption";
-import { Success } from "../libs/Help";
+import { LogSuccess } from "../libs/Help";
 import Input from "../libs/Input";
 import Writer from "../libs/Writer";
 
@@ -35,5 +35,5 @@ export default async function EditSecret(filename: string) {
   data.Save();
 
   // Output
-  Success("File Saved !");
+  LogSuccess("File Saved !");
 }

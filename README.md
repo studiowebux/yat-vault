@@ -305,38 +305,54 @@ For more details [Create new Secret File](#create-new-secret-file)
 
 The [TODO](./TODO)
 
-### V1.1.0 - Alpha - 2023-04-26
+### V1.2.0 - Alpha - 2023-05-03
+
+- Improved CLI Output (Colors, status, messages, error handling)
+- Improve AWS Interactions and error handling when syncing values to AWS
+- Fixed issue when trying to update keys already stored in SSM.
+
+<details>
+  <summary>### V1.1.0 - Alpha - 2023-04-26</summary>
 
 - Added new feature
 - you can specify variables within the values and load a JSON file to replace those values, plus you can specify default values
 - Documentation for the new feature
 
-### V1.0.5 & V1.0.6 - Alpha - 2023-04-26
+</details>
+
+<details>
+  <summary>### V1.0.5 & V1.0.6 - Alpha - 2023-04-26</summary>
 
 - Improved passphrase handling
 - Bug fixed regarding the passphrase
+</details>
 
-### V1.0.4 - Alpha - 2023-04-08
+<details>
+  <summary>### V1.0.4 - Alpha - 2023-04-08</summary>
 
 - AWS Configuration is optional
 - Bug fixes
-
-### V1.0.3 - Alpha - 2023-04-08
+</details>
+<details>
+  <summary>### V1.0.3 - Alpha - 2023-04-08</summary>
 
 - Added new feature, generate .env file
 - Changed default values for aws ssm
 - Updated Documentation
 - Added print help
 - Fixes and Improvements
-
-### V1.0.2 - Alpha - 2023-04-07
+</details>
+<details>
+  <summary>### V1.0.2 - Alpha - 2023-04-07</summary>
 
 - Reviewed Documentation
-
-### V1.0.1 - Alpha - 2023-04-07
+</details>
+<details>
+  <summary>### V1.0.1 - Alpha - 2023-04-07</summary>
 
 - First requirements implemented
 - Deployed to npmjs
+</details>
 
 ---
 

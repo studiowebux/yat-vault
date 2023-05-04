@@ -2,7 +2,7 @@ import { Color } from "../libs/Colors";
 import { decryptSecret } from "../libs/CommandHelper";
 import Data from "../libs/Data";
 import Encryption from "../libs/Encryption";
-import { Success } from "../libs/Help";
+import { LogSuccess } from "../libs/Help";
 import Input from "../libs/Input";
 import AwsSSM from "../libs/Store/ssm.aws";
 import { deepCopy } from "../libs/Utils";
@@ -41,8 +41,9 @@ export default async function SyncSecrets(filename: string) {
     }) || [];
 
   await Promise.all(awsProcessingPerRequestedRegions);
-  Success("aws.ssm: Sync Completed");
+
+  LogSuccess("aws.ssm: Sync Completed");
 
   // Output
-  Success("Values Synced !");
+  LogSuccess("Values Synced !");
 }

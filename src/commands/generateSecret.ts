@@ -1,6 +1,6 @@
 import { Color } from "../libs/Colors";
 import Generator from "../libs/Generator";
-import { Success } from "../libs/Help";
+import { LogSuccess } from "../libs/Help";
 import Input from "../libs/Input";
 import Reader from "../libs/Reader";
 import Writer from "../libs/Writer";
@@ -24,5 +24,5 @@ export default async function GenerateSecret(filename: string) {
   Writer.Save(`${_filename}.yml`, content);
 
   // Output
-  Success(`Secret File Generated at ${Color(`${_filename}.yml`, "Bold")} !`);
+  LogSuccess(`Secret File Generated at ${Color(`${_filename}.yml`, "Bold")} !`);
 }

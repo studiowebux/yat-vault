@@ -10,7 +10,7 @@ import GenerateSecret from "./commands/generateSecret";
 import SyncSecrets from "./commands/syncSecrets";
 import UploadKeys from "./commands/uploadKeys";
 import PrintHelp from "./libs/Help";
-import { Error } from "./libs/Help";
+import { LogError } from "./libs/Help";
 
 const { version, name, author } = require("../package.json");
 
@@ -61,7 +61,7 @@ const argv = parseArgs(process.argv.slice(2));
 
     PrintHelp();
   } catch (e: any) {
-    process.env.DEBUG ? Error(e.stack) : Error(`${e.message}`);
+    process.env.DEBUG ? LogError(e.stack) : LogError(`${e.message}`);
     process.exit(1);
   }
 })();

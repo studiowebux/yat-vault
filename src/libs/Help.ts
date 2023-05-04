@@ -18,18 +18,18 @@ Documentation: https://github.com/yet-another-tool/yat-vault
 `);
 }
 
-export const Success = (text: string) => {
+export const LogSuccess = (text: string) => {
   console.log(Color("✔︎", "FgGreen"), Color("SUCCESS:", "FgGreen"), text);
 };
 
-export const Info = (text: string) => {
+export const LogInfo = (text: string) => {
   console.log(Color("ℹ︎", "FgCyan"), Color("INFO:", "FgCyan"), text);
 };
 
-export const Warn = (text: string) => {
-  console.log(Color("!", "FgMagenta"), Color("WARN:", "FgMagenta"), text);
+export const LogWarn = (text: string) => {
+  console.error(Color("!", "FgMagenta"), Color("WARN:", "FgMagenta"), text);
 };
 
-export const Error = (text: string) => {
-  console.log(Color("✘", "FgRed"), Color("ERROR:", "FgRed"), text);
+export const LogError = (text: string) => {
+  console.error(Color("✘", "FgRed"), Color("ERROR:", "FgRed"), text);
 };
