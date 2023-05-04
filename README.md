@@ -49,6 +49,7 @@
 - Generate a .env file using your secrets
 - Compatible with your CI, using the environment variables
 - Made with NodeJS 18 and Typescript, built to be extended and improved
+- Support override configurations and default values, it gives flexibility for local and cloud development setup. Provide simple way to standardize and use the same configuration across all machines and environments.
 
 ## Installation
 
