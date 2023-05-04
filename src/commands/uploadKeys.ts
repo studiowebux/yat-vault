@@ -1,4 +1,5 @@
 import Data from "../libs/Data";
+import { LogSuccess } from "../libs/Help";
 import Input from "../libs/Input";
 import AwsLoader from "../libs/Loader/aws.ssm";
 
@@ -28,10 +29,10 @@ export default async function UploadKeys(
   await awsLoader.UploadKeys(
     data.GetConfig(_provider)?.privateKeyPath as string,
     data.GetConfig(_provider)?.publicKeyPath as string,
-    (await data.GetPrivateKey()) as string,
-    (await data.GetPublicKey()) as string
+    (await data.GetPrivateKey(true)) as string,
+    (await data.GetPublicKey(true)) as string
   );
 
   // Output
-  console.log("SUCCESS: Keys Uploaded !");
+  LogSuccess("Keys Uploaded to aws ssm!");
 }

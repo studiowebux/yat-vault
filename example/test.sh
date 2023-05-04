@@ -13,3 +13,5 @@ node build/index.js --print --filename example/vault.urls.yml --overrides exampl
 node build/index.js --print --filename example/vault.urls.yml
 node build/index.js --dotenv --filename example/vault.urls.yml --overrides example/local.config.json --env .env.local
 
+STAGE=dev node build/index.js --sync --filename example/test.yml
+node build/index.js --upload --filename example/test.yml --region ca-central-1 --provider aws

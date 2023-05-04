@@ -4,6 +4,8 @@ import {
   SSMClient,
 } from "@aws-sdk/client-ssm";
 import Loader from "../Loader";
+import { LogInfo } from "../Help";
+import { Color } from "../Colors";
 
 export default class AwsLoader extends Loader {
   private client: SSMClient | undefined;
@@ -12,7 +14,7 @@ export default class AwsLoader extends Loader {
     super();
     if (!region || region === "") {
       region = process.env.AWS_REGION || "us-east-1";
-      console.log(`INFO: Using AWS Region: ${region}`);
+      LogInfo(`Using AWS Region: ${Color(region, "Underscore")}`);
     }
     this.client = new SSMClient({ region: region });
   }

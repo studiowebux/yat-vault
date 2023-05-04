@@ -1,3 +1,5 @@
+import { Color } from "./Colors";
+
 export default function PrintHelp() {
   console.log(`
 Available Commands:
@@ -15,3 +17,19 @@ yat-vault --dotenv --filename vault.dev.yml --env .env.dev [--overrides config.l
 Documentation: https://github.com/yet-another-tool/yat-vault
 `);
 }
+
+export const LogSuccess = (text: string) => {
+  console.log(Color("✔︎", "FgGreen"), Color("SUCCESS:", "FgGreen"), text);
+};
+
+export const LogInfo = (text: string) => {
+  console.log(Color("ℹ︎", "FgCyan"), Color("INFO:", "FgCyan"), text);
+};
+
+export const LogWarn = (text: string) => {
+  console.error(Color("!", "FgMagenta"), Color("WARN:", "FgMagenta"), text);
+};
+
+export const LogError = (text: string) => {
+  console.error(Color("✘", "FgRed"), Color("ERROR:", "FgRed"), text);
+};

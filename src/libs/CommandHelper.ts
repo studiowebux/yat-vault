@@ -2,6 +2,7 @@ import Input from "../libs/Input";
 import { IOverride, secret } from "../types/types";
 import Data from "./Data";
 import Encryption from "./Encryption";
+import { LogInfo } from "./Help";
 
 const input = new Input();
 
@@ -13,6 +14,7 @@ export async function decryptSecret(
   // Decrypt values
   let values: secret[] = [];
   try {
+    LogInfo("Decrypting values...");
     values = await data.DecryptValues(
       encryption,
       process.env.PASSPHRASE || "",
@@ -32,5 +34,6 @@ export async function decryptSecret(
     }
   }
 
+  LogInfo("values decrypted.");
   return values;
 }

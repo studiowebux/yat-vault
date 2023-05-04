@@ -1,5 +1,6 @@
 import Data from "../libs/Data";
 import Encryption from "../libs/Encryption";
+import { LogSuccess } from "../libs/Help";
 import Input from "../libs/Input";
 import Writer from "../libs/Writer";
 
@@ -25,7 +26,7 @@ export default async function EditSecret(filename: string) {
       data.EncryptValues(encryption);
     } else {
       throw new Error(
-        "Unable to encrypt the file, missing public and/or private keys. The file has been ALTERED and NOT encrypted."
+        "Unable to encrypt the file, missing keys. The file has been ALTERED and NOT encrypted."
       );
     }
   }
@@ -34,5 +35,5 @@ export default async function EditSecret(filename: string) {
   data.Save();
 
   // Output
-  console.log("SUCCESS: File Saved !");
+  LogSuccess("File Saved !");
 }

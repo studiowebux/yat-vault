@@ -4,6 +4,8 @@ import {
   PutParameterCommand,
 } from "@aws-sdk/client-ssm";
 import Store from "../Store";
+import { LogError, LogInfo } from "../Help";
+import { Color } from "../Colors";
 
 export default class AwsSSM extends Store {
   private client: SSMClient | undefined;
@@ -23,31 +25,51 @@ export default class AwsSSM extends Store {
     return this.client;
   }
 
-  public async Sync(data: Array<any>): Promise<Object> {
+  public async Sync(data: Array<any>): Promise<object> {
     const _data = [...data];
-    console.log(`aws.ssm: Processing '${this.region}'`);
-    return Promise.all(
-      this.ReplaceVariables(_data).map((item) =>
-        this.client
-          ?.send(
-            new PutParameterCommand({
-              Name: item.name,
-              Value: item.value,
-              Type: item.type,
-              Description: item.description,
-              Overwrite: item.overwrite,
-            })
-          )
-          .catch((e) => {
-            if (
-              e.message.includes("The parameter already exists.") &&
-              item.overwrite === false
-            ) {
-              console.log(
-                `${this.storeType}: Update for ${item.name} Skipped. Reason: No Overwrite requested.`
+
+    return await Promise.all(
+      this.ReplaceVariables(_data).map(
+        (item) =>
+          new Promise(async (resolve, reject) => {
+            try {
+              await this.client?.send(
+                new PutParameterCommand({
+                  Name: item.name,
+                  Value: item.value,
+                  Type: item.type,
+                  Description: item.description,
+                  Overwrite: item.overwrite,
+                })
               );
-              return;
-            } else throw e;
+
+              LogInfo(
+                `aws.ssm: Update for ${Color(item.name, "Bold")} ${Color(
+                  "Synced",
+                  "FgGreen"
+                )}.`
+              );
+              return resolve(item.name);
+            } catch (e: any) {
+              if (
+                e.message.includes("The parameter already exists.") &&
+                item.overwrite === false
+              ) {
+                LogInfo(
+                  `${this.storeType}: Update for ${Color(
+                    item.name,
+                    "Bold"
+                  )} ${Color("Skipped", "FgYellow")}. Reason: ${Color(
+                    "No Overwrite requested.",
+                    "Bold"
+                  )}`
+                );
+                return resolve(null);
+              } else {
+                LogError(e.message);
+                return reject(new Error(e.message));
+              }
+            }
           })
       )
     );
