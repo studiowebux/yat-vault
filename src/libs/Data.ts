@@ -205,35 +205,42 @@ export default class Data {
   ): Promise<Array<secret>> {
     return Promise.all(
       this.values?.map(async (value) => {
-        // Apply overrides if any
-        if (overrides && Object.keys(overrides).length > 0) {
-          Object.keys(overrides).forEach((key) => {
-            value.value = value.value.toString().replaceAll(
-              new RegExp(`\\$\\{(${key})\\}|\\$\\{(${key}:-(.*?))\\}`, "g"), // `\\$\\{${key}.*?\\}`
-              overrides[key]
-            );
-          });
-          LogSuccess(`Applied overrides for ${Color(value.name, "FgGray")}`);
-        }
-
-        // Apply defaults if any
-        // Extract default value if any
-        const regex = new RegExp(`\\$\\{.*?:-(.*?)\\}`);
-        const val = value?.value?.toString().match(regex);
-        if (val && val.length > 0) {
-          // Replace the variable with the default value
-          value.value = value.value
-            .toString()
-            .replaceAll(
-              new RegExp(`\\$\\{[\\w\\d\\s]+:-[\\w\\d\\s]+\\}`, "g"),
-              val[1].toString()
-            );
-          LogSuccess(`Applied defaults for ${Color(value.name, "FgGray")}`);
-        }
+        this.applyOverrides(value, overrides);
+        this.applyDefaults(value);
 
         return value;
       }) || []
     );
+  }
+
+  private applyOverrides(value: secret, overrides: IOverride) {
+    // Apply overrides if any
+    if (overrides && Object.keys(overrides).length > 0) {
+      Object.keys(overrides).forEach((key) => {
+        value.value = value.value.toString().replaceAll(
+          new RegExp(`\\$\\{(${key})\\}|\\$\\{(${key}:-(.*?))\\}`, "g"), // `\\$\\{${key}.*?\\}`
+          overrides[key]
+        );
+      });
+      LogSuccess(`Applied overrides for ${Color(value.name, "FgGray")}`);
+    }
+  }
+
+  private applyDefaults(value: secret) {
+    // Apply defaults if any
+    // Extract default value if any
+    const regex = new RegExp(`\\$\\{.*?:-(.*?)\\}`);
+    const val = value?.value?.toString().match(regex);
+    if (val && val.length > 0) {
+      // Replace the variable with the default value
+      value.value = value.value
+        .toString()
+        .replaceAll(
+          new RegExp(`\\$\\{[\\w\\d\\s]+:-[\\w\\d\\s]+\\}`, "g"),
+          val[1].toString()
+        );
+      LogSuccess(`Applied defaults for ${Color(value.name, "FgGray")}`);
+    }
   }
 
   public async DecryptValues(

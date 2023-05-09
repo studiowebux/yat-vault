@@ -306,6 +306,11 @@ For more details [Create new Secret File](#create-new-secret-file)
 
 The [TODO](./TODO)
 
+### V1.2.2 - Not Release Yet - 2023-05-09
+
+- Tested default behaviour for overrides and defaults values
+- Need to improve and streamline the documentation before releasing
+
 ### V1.2.1 - Alpha - 2023-05-03
 
 - Improved CLI Output (Colors, status, messages, error handling)

@@ -1,50 +1,61 @@
 _values:
   - name: /test/db
-    value: "postgres://localhost:${databaseName:-default}"
-    description: ""
+    value: postgres://localhost:${databaseName:-default}
+    description: ''
     type: String
     overwrite: false
     envName: LOCAL_URL
   - name: /test/local_url
-    value: "https://localhost:${local_port:-3000}"
-    description: ""
+    value: https://localhost:${local_port:-3000}
+    description: ''
     type: String
     overwrite: false
     envName: LOCAL_URL
   - name: /test/local_url_1
-    value: "https://localhost:${localPort:-3000}"
-    description: ""
+    value: https://localhost:${localPort:-3000}
+    description: ''
     type: String
     overwrite: false
     envName: LOCAL_URL_1
   - name: /test/local_url_2
-    value: "https://localhost:${local_port}"
-    description: ""
+    value: https://localhost:${local_port}
+    description: ''
     type: String
     overwrite: false
     envName: LOCAL_URL_2
   - name: /test/local_url_3
-    value: "https://localhost:${localPort}"
-    description: ""
+    value: https://localhost:${localPort}
+    description: ''
     type: String
     overwrite: false
     envName: LOCAL_URL_3
   - name: /test/local_url_4
-    value: "https://localhost:${localPort}/a${local_port}/b${local_porte:-3000}"
-    description: ""
+    value: https://localhost:${localPort}/a${local_port}/b${local_porte:-3000}
+    description: ''
     type: String
     overwrite: false
     envName: LOCAL_URL_4
   - name: /test/local_url_5
-    value: "https://localhost:1${local_port}/2${local_port}/3${local_port:-3000}/4${local_port:-abc}/5${local_porte:-abc}"
-    description: ""
+    value: >-
+      https://localhost:1${local_port}/2${local_port}/3${local_port:-3000}/4${local_port:-abc}/5${local_porte:-abc}
+    description: ''
     type: String
     overwrite: false
     envName: LOCAL_URL_5
   - name: /test/local_url_5
-    value: "https://localhost:1${local_port}/6${local_porte:-abc}/3${local_port:-3000}/4${local_port:-abc}/5${local_porte:-abc}"
-    description: ""
+    value: >-
+      https://localhost:1${local_port}/6${local_porte:-abc}/3${local_port:-3000}/4${local_port:-abc}/5${local_porte:-abc}
+    description: ''
     type: String
     overwrite: false
     envName: LOCAL_URL_5
+  - name: /test/local_url_6_secure
+    value: >-
+      $enc:MUYXUSDmcGglkqp9+TrDqeBCgOxy30sOUx1YDHyhDYI41rRYekBoeFkW7TnRqB0Q1nVMP9BnmIxgYhohgNNSsVG2VdiXZQu+CF7wj5yDQPUU6Rq6tTJ3RrVgINTo8R6BlyCWBdLJHYwjOXEwsbMAg7TkuQbrlCRBuV18/cGfpdBcr7dNOOw7QX6iUbqAkUO2KP/IQfunSvjR6BaQ4rD3QCUSYHkdsoiU+fCFNY01t9vwM99/6o5fRKg3BUvc0h/TrnbKusQbHIWuzxTqeIHH2i0ubFJQdUCWJOkE9qZa09Sez/+Q77c+DtEF30JEPdiD5tNYVH4EjXyfCbmQA5qvjik1GrFt7CvGf3Fv8HDNF2Fx8csXQkKOA16Qt7c79wJ1UJsdOQou+xRNEm0mGj/1yejoS7Z+02M6UyyDHTUHO2yFrqDxKG+qfK7Ix/Vo66nPPo7RHzrvhMqIwr4fUihaARPRPN0rZBU8X97Rpow8R014e8KAJPtU093V3jQxoPwYviGgE9VHVJcjC4Gf8varSUUQ0Iwar6Y+gT0ReKsPbS02+sEn1IE9ScY0LIhXgu4q2GBPk5HW2xs7xIFYVlvvalZI1VMqIEI6eh1lK9PU1SYDPuSLIT2oAX4OhqiExzZXPRKaz7T87dKVEklxGUiymCS43iBwS6IM9fu18iNW30g=
+    description: ''
+    type: SecureString
+    overwrite: false
+    envName: LOCAL_URL_6_secure
 _configurations:
+  publicKeyPath: ./test.pub
+  privateKeyPath: ./test.key

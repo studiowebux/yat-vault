@@ -14,6 +14,7 @@
 - [x] Upload local Keys to AWS SSM
 - [x] Generate local .env
 - [x] AWS Configuration is optional
+- [x] Defaults should always be triggered
 - [] Support Windows 😬
 - [] Print values with replaced variables
 - [] Allow Multiple Public Keys / Private Keys
@@ -24,3 +25,4 @@
 - [] Allow updating Keys quickly
 - [] Write Tests Cases
 - [] Clean the example directory
+- [] Edit values should decrypt values to update them
