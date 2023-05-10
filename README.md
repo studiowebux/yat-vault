@@ -306,16 +306,18 @@ For more details [Create new Secret File](#create-new-secret-file)
 
 The [TODO](./TODO)
 
-### V1.2.2 - Not Release Yet - 2023-05-09
+### V1.2.2 - Alpha - 2023-05-10
 
 - Tested default behaviour for overrides and defaults values
-- Need to improve and streamline the documentation before releasing
+- Add special characters in the regex
 
-### V1.2.1 - Alpha - 2023-05-03
+<details>
+  <summary>### V1.2.1 - Alpha - 2023-05-03</summary>
 
 - Improved CLI Output (Colors, status, messages, error handling)
 - Improve AWS Interactions and error handling when syncing values to AWS
 - Fixed issue when trying to update keys already stored in SSM.
+</details>
 
 <details>
   <summary>### V1.1.0 - Alpha - 2023-04-26</summary>
