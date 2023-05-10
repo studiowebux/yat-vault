@@ -236,7 +236,10 @@ export default class Data {
       value.value = value.value
         .toString()
         .replaceAll(
-          new RegExp(`\\$\\{[\\w\\d\\s]+:-[\\w\\d\\s]+\\}`, "g"),
+          new RegExp(
+            `\\$\\{[\\w\\d\\s]+:-[\\w\\d\\s\\!\\@\\#\\$\\%\\^\\&\\*\\)\\(\\+\\=\\.\\_\\-\\/\\:\\?]+\\}`,
+            "g"
+          ),
           val[1].toString()
         );
       LogSuccess(`Applied defaults for ${Color(value.name, "FgGray")}`);
