@@ -59,7 +59,7 @@ _values:
   - name: /test/DATABASE_STUFF
     value: >-
       $enc:POfuDZfIw8gh7qBXiShGqJcYSPPIPfWR/CbgJoc7RDs8nip6xAjeU3UrhxqnUdwC1AtDcb5ih2YKJ6MV6ow1oonLrLU1aG8LEkQRYu2XiL0GwMKX+vjDPNxd1nsuiX2LI43VBEsZLYQI3gV7d8MCNgKzEuq3kmQ5Os0jhsNYuPftGsTOSkQPRNAL/Y3KOaw2jlLIa63r2yYV0F/uCZCUybhMZTtBLxH6717MqCGexJQbz50M5GUs48ogLvzmfVM/fl2rFvL9m5iFTcFYVUVZuCwEzJKBqQzvI643hdTNumGnyHB5gkzOZIHeNGDFWvLMBjOuST0G2teMZQIqIHV4KwixwDUqvyAndNgqGKOLoacTb9Nlsk8X83v/kV5YH9kYJUZXdMyv09JwHDwkwg5Pfy2MXzBXLMQG9d7t1Dn/G60UBOt1kSivirkD87eA3W8qjmjCIoETBienEcYnrIbLgOhOTz3R+WJtAQd6Sy6u2+69+EjBwTlnhdD1ymdesbuUt9ukcXExHBGnFT5VGVTZnYvzsOvHCyUOq2ohdYXduQPQXq1CqO+LbGYjJiwRDIXGbhgefmXcotH4xbilJZGJsO6XQuyhOVAaZgRrciS9xgJO7c/+C/RC6dxjXC4hlGnchuKynCXphq+rvXRMJGQVarAaJojC/3BP3fjyPbqn2iQ=
-    description: ''
+    description: 'here is one !'
     type: SecureString
     overwrite: false
     envName: DATABASE_STUFF

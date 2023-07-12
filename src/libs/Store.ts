@@ -30,8 +30,13 @@ export default abstract class Store {
     const updatedData = [...data].map((item) => {
       this.regexes.forEach((regex) => {
         item.name = item.name
-          .replace(regex.value, fromEnv(this.variables[regex.key]) || item.name)
-          .replaceAll("{region}", this.region);
+          ? item.name
+              .replace(
+                regex.value,
+                fromEnv(this.variables[regex.key]) || item.name
+              )
+              .replaceAll("{region}", this.region)
+          : item.name;
       });
 
       return item;

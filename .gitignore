@@ -11,3 +11,5 @@ dev.yml
 
 # Example
 !example/**
+
+.DS_Store

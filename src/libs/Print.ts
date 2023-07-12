@@ -7,21 +7,24 @@ export const printValues = (values: secret[]) => {
   values.forEach((value) => {
     console.log(
       `${Color("SSM Path:", "Bold")} ${Color(
-        value.name,
+        value.name || "No Name Defined",
         "Underscore"
-      )} | ${Color("Description:", "Bold")}${Color(
-        value.description as string,
+      )} | ${Color("Description:", "Bold")} ${Color(
+        (value.description as string) || "No Description Defined",
         "Underscore"
       )}`
     );
     console.log(
-      `${Color("Type:", "Bold")} ${Color(value.type, "Underscore")} | ${Color(
-        "Env:",
-        "Bold"
-      )} ${Color(value.envName as string, "Underscore")} | ${Color(
-        "Overwrite:",
-        "Bold"
-      )} ${Color(value.overwrite ? "Yes" : "No", "Underscore")}`
+      `${Color("Type:", "Bold")} ${Color(
+        value.type || "No Type Defined",
+        "Underscore"
+      )} | ${Color("Env:", "Bold")} ${Color(
+        value.envName as string,
+        "Underscore"
+      )} | ${Color("Overwrite:", "Bold")} ${Color(
+        value.overwrite ? "Yes" : "No",
+        "Underscore"
+      )}`
     );
     console.log(
       `${Color("Value:", "Bold")} '${Color(value.value, "Underscore")}'`

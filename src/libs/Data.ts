@@ -161,7 +161,7 @@ export default class Data {
   public GetKeyValue(): any {
     if (this.values && this.values?.length > 0)
       return Object.fromEntries(
-        this.values.map((value) => [value.name, value.value])
+        this.values.map((value) => [value.name || value.envName, value.value])
       );
   }
 
@@ -184,11 +184,15 @@ export default class Data {
           value.type === "SecureString" &&
           !value.value.toString().startsWith("$enc:")
         ) {
-          LogInfo(`Encrypting ${Color(value.name, "FgGray")}...`);
+          LogInfo(
+            `Encrypting ${Color(value.name || "No Name Defined", "FgGray")}...`
+          );
           value.value = `$enc:${encryption
             .EncryptData(Buffer.from(value.value.toString()))
             .toString("base64")}`;
-          LogSuccess(`${Color(value.name, "FgGray")} encrypted.`);
+          LogSuccess(
+            `${Color(value.name || "No Name Defined", "FgGray")} encrypted.`
+          );
         }
 
         return value;
@@ -222,7 +226,12 @@ export default class Data {
           overrides[key]
         );
       });
-      LogSuccess(`Applied overrides for ${Color(value.name, "FgGray")}`);
+      LogSuccess(
+        `Applied overrides for ${Color(
+          value.name || "No Name Defined",
+          "FgGray"
+        )}`
+      );
     }
   }
 
@@ -242,7 +251,12 @@ export default class Data {
           ),
           val[1].toString()
         );
-      LogSuccess(`Applied defaults for ${Color(value.name, "FgGray")}`);
+      LogSuccess(
+        `Applied defaults for ${Color(
+          value.name || "No Name Defined",
+          "FgGray"
+        )}`
+      );
     }
   }
 
@@ -258,7 +272,9 @@ export default class Data {
           this.values?.map(async (value) => {
             // Decrypt secrets.
             if (value.type === "SecureString") {
-              LogInfo(`Decrypting ${Color(value.name, "FgGray")}`);
+              LogInfo(
+                `Decrypting ${Color(value.name || "No Name Defined", "FgGray")}`
+              );
               value.value = (
                 await encryption.DecryptData(
                   Buffer.from(
@@ -269,7 +285,9 @@ export default class Data {
                 )
               ).toString();
 
-              LogSuccess(`${Color(value.name, "FgGray")} decrypted.`);
+              LogSuccess(
+                `${Color(value.name || "No Name Defined", "FgGray")} decrypted.`
+              );
             }
             return value;
           }) || []

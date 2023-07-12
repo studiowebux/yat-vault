@@ -33,6 +33,12 @@ export default async function SyncSecrets(filename: string) {
   let values: secret[] = [];
   values = await decryptSecret(data, encryption);
 
+  // Delete value that has no name, type or overwrite options defined
+  // these 3 are required to setup SSM Properly.
+  values = values.filter(
+    (value) => value.name && value.type && value.overwrite
+  );
+
   console.log(Color("⇪", "FgBlue"), "aws.ssm: Starting Sync");
   const awsProcessingPerRequestedRegions =
     data.GetConfig("aws")?.regions?.map((region) => {

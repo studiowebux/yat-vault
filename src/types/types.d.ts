@@ -15,11 +15,11 @@ interface configurations {
 }
 
 interface secret {
-  name: string;
+  name: string | undefined;
   description?: string;
   value: string | number;
-  type: "String" | "SecureString" | "StringList";
-  overwrite: boolean;
+  type: "String" | "SecureString" | "StringList" | undefined;
+  overwrite: boolean | undefined;
   envName?: string;
 }
 

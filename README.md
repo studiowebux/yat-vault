@@ -306,10 +306,16 @@ For more details [Create new Secret File](#create-new-secret-file)
 
 The [TODO](./TODO)
 
-### V1.2.2 - Alpha - 2023-05-10
+### V1.2.3 - Beta - 2023-07-12
+
+- Added concept of local variables (`--dotenv`) (to define environment variables only), this way it setup the local machine and skip the sync process while syncing with SSM (the `--sync` command).
+
+<details>
+  <summary>V1.2.2 - Alpha - 2023-05-10</summary>
 
 - Tested default behaviour for overrides and defaults values
 - Add special characters in the regex
+</details>
 
 <details>
   <summary>### V1.2.1 - Alpha - 2023-05-03</summary>

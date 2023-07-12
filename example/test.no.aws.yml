@@ -31,6 +31,8 @@ _values:
     type: String
     overwrite: true
     envName: STAGED_VERSION
+  - value: THIS_IS_A_LOCAL_VARIABLE_ONLY
+    envName: LOCAL_ONLY
 _configurations:
   publicKeyPath: ./test.pub
   privateKeyPath: ./test.key
